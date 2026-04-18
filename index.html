@@ -2,36 +2,402 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Cosmic Hall</title>
+  <title>MetaverseSTUD</title>
   <script src="./aframe.min.js"></script>
+  <style>
+    #ui { position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+          background:rgba(0,0,0,0.5); color:#fff; padding:8px 18px;
+          border-radius:20px; font-family:sans-serif; font-size:13px;
+          pointer-events:none; z-index:999; }
+  </style>
 </head>
 <body>
-<a-scene background="color: #e8f0ff">
-  <a-light type="ambient" color="#e8f0ff" intensity="1.4"></a-light>
-  <a-light type="directional" color="#fff5e0" intensity="0.6" position="30 60 20"></a-light>
-  <a-box width="30" height="8" depth="30" position="0 4 0"
-    material="color:#b8d4ff;opacity:0.12;transparent:true;side:double"></a-box>
-  <a-plane width="30" height="30" rotation="-90 0 0"
-    material="color:#dde8ff;opacity:0.25;metalness:0.6;roughness:0.2;transparent:true"></a-plane>
-  <a-sphere position="-80 20 -60" radius="28" color="#f0c06e" roughness="0.7"
-    animation="property:rotation;to:0 360 0;loop:true;dur:40000;easing:linear"></a-sphere>
-  <a-sphere position="90 15 -50" radius="18" color="#7c9fff" roughness="0.6"
-    animation="property:rotation;to:0 360 0;loop:true;dur:55000;easing:linear"></a-sphere>
-  <a-sphere position="-50 50 -90" radius="14" color="#a78bfa" roughness="0.8"
-    animation="property:rotation;to:0 360 0;loop:true;dur:35000;easing:linear"></a-sphere>
-  <a-sphere position="60 -10 -70" radius="10" color="#f87171" roughness="0.75"
-    animation="property:rotation;to:0 360 0;loop:true;dur:28000;easing:linear"></a-sphere>
-  <a-box width="8" height="0.4" depth="5" position="0 0.2 -10"
-    material="color:#1a2040;opacity:0.85"></a-box>
-  <a-cylinder height="1.2" radius="0.03" position="0 0.9 -10"
-    material="color:#ffffff;opacity:0.7"></a-cylinder>
-  <a-box width="2.5" height="0.5" depth="1" position="-10 0.25 -3"
-    material="color:#f0ede8;roughness:0.95"></a-box>
-  <a-box width="2.5" height="0.5" depth="1" position="10 0.25 -3"
-    material="color:#f0ede8;roughness:0.95"></a-box>
-  <a-entity position="0 1.6 12">
-    <a-camera wasd-controls look-controls></a-camera>
+<div id="ui">WASD — рух · Миша — погляд · Клік на портал — перехід</div>
+<a-scene>
+
+  <!-- ═══ ASSETS ═══ -->
+  <a-assets>
+    <img id="wall-tex" src="https://i.imgur.com/2eBnkzm.jpg" crossorigin="anonymous">
+  </a-assets>
+
+  <!-- ══════════════════════════════════════════
+       ГОЛОВНИЙ ХОЛ — Вавілонський храм
+       Центр: 0,0,0  Розмір: 30×8×20
+  ══════════════════════════════════════════ -->
+  <a-entity id="main-hall">
+
+    <!-- Підлога -->
+    <a-plane width="30" height="20" rotation="-90 0 0" position="0 0 0"
+      material="color:#c8a96e;roughness:0.8"></a-plane>
+
+    <!-- Стеля -->
+    <a-plane width="30" height="20" rotation="90 0 0" position="0 8 0"
+      material="color:#8b6914;roughness:0.9"></a-plane>
+
+    <!-- Стіни — північ/південь/схід/захід -->
+    <a-plane width="30" height="8" position="0 4 -10" rotation="0 0 0"
+      material="color:#c8a96e;roughness:0.85"></a-plane>
+    <a-plane width="20" height="8" position="-15 4 0" rotation="0 90 0"
+      material="color:#b8994e;roughness:0.85"></a-plane>
+    <a-plane width="20" height="8" position="15 4 0" rotation="0 -90 0"
+      material="color:#b8994e;roughness:0.85"></a-plane>
+
+    <!-- Колони (вавілонський стиль) -->
+    <a-cylinder height="8" radius="0.4" position="-8 4 -6" material="color:#d4aa55;roughness:0.7"></a-cylinder>
+    <a-cylinder height="8" radius="0.4" position="8 4 -6" material="color:#d4aa55;roughness:0.7"></a-cylinder>
+    <a-cylinder height="8" radius="0.4" position="-8 4 4" material="color:#d4aa55;roughness:0.7"></a-cylinder>
+    <a-cylinder height="8" radius="0.4" position="8 4 4" material="color:#d4aa55;roughness:0.7"></a-cylinder>
+
+    <!-- NFT рамки на стіні (placeholder — замінимо на реальні) -->
+    <a-plane width="2.5" height="2" position="-10 4 -9.8" material="color:#1a1a2e"></a-plane>
+    <a-plane width="2.5" height="2" position="-5 4 -9.8" material="color:#16213e"></a-plane>
+    <a-plane width="2.5" height="2" position="0 4 -9.8" material="color:#1a1a2e"></a-plane>
+    <a-plane width="2.5" height="2" position="5 4 -9.8" material="color:#16213e"></a-plane>
+    <a-plane width="2.5" height="2" position="10 4 -9.8" material="color:#1a1a2e"></a-plane>
+
+    <!-- Освітлення холу -->
+    <a-light type="point" color="#ffd700" intensity="0.8" position="0 7 0"></a-light>
+    <a-light type="ambient" color="#f5deb3" intensity="0.6"></a-light>
+
+    <!-- ПОРТАЛ → Коридор гуманітаріїв (ліворуч) -->
+    <a-entity position="-14.5 0 0" id="portal-left">
+      <a-plane width="4" height="6" position="0 3 0" rotation="0 90 0"
+        material="color:#7c3aed;opacity:0.7;transparent:true"
+        class="clickable" onclick="teleport(-35, 1.6, 0, 90)"></a-plane>
+      <a-text value="Гуманітарії" position="0 6.5 0" align="center"
+        color="#a78bfa" width="6" rotation="0 90 0"></a-text>
+    </a-entity>
+
+    <!-- ПОРТАЛ → Коридор технарів (праворуч) -->
+    <a-entity position="14.5 0 0" id="portal-right">
+      <a-plane width="4" height="6" position="0 3 0" rotation="0 -90 0"
+        material="color:#2563eb;opacity:0.7;transparent:true"
+        class="clickable" onclick="teleport(35, 1.6, 0, -90)"></a-plane>
+      <a-text value="Технарі" position="0 6.5 0" align="center"
+        color="#60a5fa" width="6" rotation="0 -90 0"></a-text>
+    </a-entity>
+
+    <!-- ПОРТАЛ → Кімната проектів (назад) -->
+    <a-entity position="0 0 9" id="portal-projects">
+      <a-plane width="4" height="6" position="0 3 0" rotation="0 180 0"
+        material="color:#0f766e;opacity:0.7;transparent:true"
+        class="clickable" onclick="teleport(0, 1.6, 35, 180)"></a-plane>
+      <a-text value="Проекти" position="0 6.5 0" align="center"
+        color="#2dd4bf" width="6" rotation="0 180 0"></a-text>
+    </a-entity>
+
   </a-entity>
+
+  <!-- ══════════════════════════════════════════
+       КОРИДОР ГУМАНІТАРІЇВ
+       X: -30 to -50, Z: -30 to +30
+  ══════════════════════════════════════════ -->
+  <a-entity id="corridor-humanities" position="-35 0 0">
+
+    <!-- Коридорні стіни -->
+    <a-plane width="60" height="8" position="0 4 -6" rotation="0 0 0"
+      material="color:#4c1d95;roughness:0.9"></a-plane>
+    <a-plane width="60" height="8" position="0 4 6" rotation="0 180 0"
+      material="color:#4c1d95;roughness:0.9"></a-plane>
+    <a-plane width="12" height="8" position="-30 4 0" rotation="0 90 0"
+      material="color:#3b0764;roughness:0.9"></a-plane>
+    <a-plane width="60" height="6" rotation="-90 0 0" position="0 0 0"
+      material="color:#2e1065;roughness:0.8"></a-plane>
+    <a-plane width="60" height="6" rotation="90 0 0" position="0 8 0"
+      material="color:#1e0a3c;roughness:0.9"></a-plane>
+
+    <a-light type="point" color="#8b5cf6" intensity="1.0" position="0 6 0"></a-light>
+
+    <!-- КІМНАТА 1: StudSWAP -->
+    <a-entity position="-5 0 0">
+      <a-plane width="5" height="6" position="0 3 -5.9" rotation="0 0 0"
+        material="color:#7c3aed;opacity:0.85"
+        class="clickable" onclick="teleport(-40, 1.6, -20, 0)"></a-plane>
+      <a-text value="StudSWAP" position="0 6.5 -5.8" align="center" color="#ddd6fe" width="5"></a-text>
+      <a-text value="Біржа студтокенів" position="0 5.8 -5.8" align="center" color="#a78bfa" width="5"></a-text>
+    </a-entity>
+
+    <!-- КІМНАТА 2: StudNFT -->
+    <a-entity position="5 0 0">
+      <a-plane width="5" height="6" position="0 3 -5.9"
+        material="color:#6d28d9;opacity:0.85"
+        class="clickable" onclick="teleport(-30, 1.6, -20, 0)"></a-plane>
+      <a-text value="StudNFT" position="0 6.5 -5.8" align="center" color="#ddd6fe" width="5"></a-text>
+      <a-text value="Маркетплейс NFT" position="0 5.8 -5.8" align="center" color="#a78bfa" width="5"></a-text>
+    </a-entity>
+
+    <!-- КІМНАТА 3: AgroRWA -->
+    <a-entity position="15 0 0">
+      <a-plane width="5" height="6" position="0 3 -5.9"
+        material="color:#166534;opacity:0.85"
+        class="clickable" onclick="teleport(-20, 1.6, -20, 0)"></a-plane>
+      <a-text value="AgroRWA" position="0 6.5 -5.8" align="center" color="#bbf7d0" width="5"></a-text>
+      <a-text value="Аграрні токени" position="0 5.8 -5.8" align="center" color="#86efac" width="5"></a-text>
+    </a-entity>
+
+    <!-- КІМНАТА 4: Skillstamp -->
+    <a-entity position="25 0 0">
+      <a-plane width="5" height="6" position="0 3 -5.9"
+        material="color:#0f766e;opacity:0.85"
+        class="clickable" onclick="teleport(-10, 1.6, -20, 0)"></a-plane>
+      <a-text value="Skillstamp" position="0 6.5 -5.8" align="center" color="#ccfbf1" width="5"></a-text>
+      <a-text value="SBT-університет" position="0 5.8 -5.8" align="center" color="#5eead4" width="5"></a-text>
+    </a-entity>
+
+    <!-- Темні кімнати з неоном -->
+    <a-entity position="-15 0 0">
+      <a-plane width="5" height="6" position="0 3 -5.9"
+        material="color:#1a1a2e;opacity:0.95"></a-plane>
+      <a-text value="???" position="0 6.2 -5.8" align="center" color="#4c1d95" width="4"></a-text>
+      <a-text value="Скоро відкриття" position="0 5.5 -5.8" align="center" color="#6d28d9" width="4"></a-text>
+      <a-light type="point" color="#7c3aed" intensity="0.3" position="0 3 -5" distance="4"
+        animation="property:intensity;from:0.1;to:0.5;loop:true;dur:1200;direction:alternate"></a-light>
+    </a-entity>
+
+    <a-entity position="-25 0 0">
+      <a-plane width="5" height="6" position="0 3 -5.9"
+        material="color:#1a1a2e;opacity:0.95"></a-plane>
+      <a-text value="???" position="0 6.2 -5.8" align="center" color="#4c1d95" width="4"></a-text>
+      <a-text value="Скоро відкриття" position="0 5.5 -5.8" align="center" color="#6d28d9" width="4"></a-text>
+      <a-light type="point" color="#7c3aed" intensity="0.2" position="0 3 -5" distance="4"
+        animation="property:intensity;from:0.05;to:0.4;loop:true;dur:1800;direction:alternate"></a-light>
+    </a-entity>
+
+    <!-- Портал назад до холу -->
+    <a-plane width="4" height="6" position="30 3 0" rotation="0 -90 0"
+      material="color:#f59e0b;opacity:0.6;transparent:true"
+      class="clickable" onclick="teleport(0, 1.6, 0, 0)"></a-plane>
+    <a-text value="Хол" position="30 6.5 0" align="center" color="#fcd34d" width="4" rotation="0 -90 0"></a-text>
+
+    <!-- Портал до Cosmic Hall (знизу коридору) -->
+    <a-plane width="4" height="6" position="-29 3 0" rotation="0 90 0"
+      material="color:#38bdf8;opacity:0.7;transparent:true"
+      class="clickable" onclick="teleport(0, 1.6, 80, 0)"></a-plane>
+    <a-text value="Cosmic Hall" position="-29 6.5 0" align="center" color="#7dd3fc" width="5" rotation="0 90 0"></a-text>
+
+  </a-entity>
+
+  <!-- ══════════════════════════════════════════
+       КОРИДОР ТЕХНАРІВ
+       X: +35
+  ══════════════════════════════════════════ -->
+  <a-entity id="corridor-tech" position="35 0 0">
+
+    <a-plane width="60" height="8" position="0 4 -6" rotation="0 0 0"
+      material="color:#1e3a5f;roughness:0.9"></a-plane>
+    <a-plane width="60" height="8" position="0 4 6" rotation="0 180 0"
+      material="color:#1e3a5f;roughness:0.9"></a-plane>
+    <a-plane width="12" height="8" position="30 4 0" rotation="0 -90 0"
+      material="color:#0c2340;roughness:0.9"></a-plane>
+    <a-plane width="60" height="6" rotation="-90 0 0" position="0 0 0"
+      material="color:#0a1628;roughness:0.8"></a-plane>
+    <a-plane width="60" height="6" rotation="90 0 0" position="0 8 0"
+      material="color:#060e1a;roughness:0.9"></a-plane>
+
+    <a-light type="point" color="#3b82f6" intensity="1.0" position="0 6 0"></a-light>
+
+    <!-- КІМНАТА: Proof-of-History -->
+    <a-entity position="5 0 0">
+      <a-plane width="5" height="6" position="0 3 -5.9"
+        material="color:#1d4ed8;opacity:0.85"
+        class="clickable" onclick="teleport(40, 1.6, -20, 0)"></a-plane>
+      <a-text value="Proof-of-History" position="0 6.5 -5.8" align="center" color="#bfdbfe" width="5"></a-text>
+      <a-text value="Solana · часовий ланцюг" position="0 5.8 -5.8" align="center" color="#93c5fd" width="5"></a-text>
+    </a-entity>
+
+    <!-- Темні кімнати технарів -->
+    <a-entity position="-5 0 0">
+      <a-plane width="5" height="6" position="0 3 -5.9"
+        material="color:#0a1628;opacity:0.98"></a-plane>
+      <a-text value="???" position="0 6.2 -5.8" align="center" color="#1e3a5f" width="4"></a-text>
+      <a-text value="Скоро відкриття" position="0 5.5 -5.8" align="center" color="#2563eb" width="4"></a-text>
+      <a-light type="point" color="#3b82f6" intensity="0.2" position="0 3 -5" distance="4"
+        animation="property:intensity;from:0.05;to:0.45;loop:true;dur:900;direction:alternate"></a-light>
+    </a-entity>
+
+    <a-entity position="-15 0 0">
+      <a-plane width="5" height="6" position="0 3 -5.9"
+        material="color:#0a1628;opacity:0.98"></a-plane>
+      <a-text value="???" position="0 6.2 -5.8" align="center" color="#1e3a5f" width="4"></a-text>
+      <a-text value="Скоро відкриття" position="0 5.5 -5.8" align="center" color="#2563eb" width="4"></a-text>
+      <a-light type="point" color="#60a5fa" intensity="0.15" position="0 3 -5" distance="4"
+        animation="property:intensity;from:0.05;to:0.35;loop:true;dur:1500;direction:alternate"></a-light>
+    </a-entity>
+
+    <a-entity position="-25 0 0">
+      <a-plane width="5" height="6" position="0 3 -5.9"
+        material="color:#0a1628;opacity:0.98"></a-plane>
+      <a-text value="???" position="0 6.2 -5.8" align="center" color="#1e3a5f" width="4"></a-text>
+      <a-text value="Скоро відкриття" position="0 5.5 -5.8" align="center" color="#2563eb" width="4"></a-text>
+      <a-light type="point" color="#2563eb" intensity="0.1" position="0 3 -5" distance="4"
+        animation="property:intensity;from:0.03;to:0.3;loop:true;dur:2100;direction:alternate"></a-light>
+    </a-entity>
+
+    <!-- Портал назад до холу -->
+    <a-plane width="4" height="6" position="-30 3 0" rotation="0 90 0"
+      material="color:#f59e0b;opacity:0.6;transparent:true"
+      class="clickable" onclick="teleport(0, 1.6, 0, 0)"></a-plane>
+    <a-text value="Хол" position="-30 6.5 0" align="center" color="#fcd34d" width="4" rotation="0 90 0"></a-text>
+
+    <!-- Портал до Cosmic Hall -->
+    <a-plane width="4" height="6" position="29 3 0" rotation="0 -90 0"
+      material="color:#38bdf8;opacity:0.7;transparent:true"
+      class="clickable" onclick="teleport(0, 1.6, 80, 0)"></a-plane>
+    <a-text value="Cosmic Hall" position="29 6.5 0" align="center" color="#7dd3fc" width="5" rotation="0 -90 0"></a-text>
+
+  </a-entity>
+
+  <!-- ══════════════════════════════════════════
+       КІМНАТА ПРОЕКТІВ
+       Z: +35
+  ══════════════════════════════════════════ -->
+  <a-entity id="room-projects" position="0 0 35">
+
+    <a-plane width="20" height="8" position="0 4 -8" rotation="0 0 0"
+      material="color:#134e4a;roughness:0.9"></a-plane>
+    <a-plane width="20" height="8" position="0 4 8" rotation="0 180 0"
+      material="color:#134e4a;roughness:0.9"></a-plane>
+    <a-plane width="16" height="8" position="-10 4 0" rotation="0 90 0"
+      material="color:#0f3d3a;roughness:0.9"></a-plane>
+    <a-plane width="16" height="8" position="10 4 0" rotation="0 -90 0"
+      material="color:#0f3d3a;roughness:0.9"></a-plane>
+    <a-plane width="20" height="16" rotation="-90 0 0" position="0 0 0"
+      material="color:#042f2e;roughness:0.8"></a-plane>
+    <a-plane width="20" height="16" rotation="90 0 0" position="0 8 0"
+      material="color:#021f1e;roughness:0.9"></a-plane>
+
+    <!-- Екран для відео -->
+    <a-plane width="12" height="7" position="0 4 -7.8"
+      material="color:#000000;opacity:0.95"></a-plane>
+    <a-text value="Projects" position="0 7 -7.7" align="center" color="#2dd4bf" width="8"></a-text>
+    <a-text value="Відео про проекти" position="0 1.5 -7.7" align="center" color="#5eead4" width="6"></a-text>
+
+    <a-light type="point" color="#2dd4bf" intensity="0.8" position="0 6 0"></a-light>
+
+    <!-- Портал назад до холу -->
+    <a-plane width="4" height="6" position="0 3 7.8" rotation="0 180 0"
+      material="color:#f59e0b;opacity:0.6;transparent:true"
+      class="clickable" onclick="teleport(0, 1.6, 0, 0)"></a-plane>
+    <a-text value="Хол" position="0 6.5 7.7" align="center" color="#fcd34d" width="4" rotation="0 180 0"></a-text>
+
+  </a-entity>
+
+  <!-- ══════════════════════════════════════════
+       COSMIC HALL
+       Z: +80
+  ══════════════════════════════════════════ -->
+  <a-entity id="cosmic-hall" position="0 0 80">
+
+    <!-- Скляні стіни -->
+    <a-box width="40" height="10" depth="40" position="0 5 0"
+      material="color:#b8d4ff;opacity:0.10;transparent:true;side:double"></a-box>
+
+    <!-- Підлога дзеркальна -->
+    <a-plane width="40" height="40" rotation="-90 0 0"
+      material="color:#dde8ff;opacity:0.20;metalness:0.7;roughness:0.15;transparent:true"></a-plane>
+
+    <!-- Планети навколо -->
+    <a-sphere position="-80 20 -60" radius="28" color="#f0c06e" roughness="0.7"
+      animation="property:rotation;to:0 360 0;loop:true;dur:40000;easing:linear"></a-sphere>
+    <a-sphere position="90 15 -50" radius="18" color="#7c9fff" roughness="0.6"
+      animation="property:rotation;to:0 360 0;loop:true;dur:55000;easing:linear"></a-sphere>
+    <a-sphere position="-50 50 -90" radius="14" color="#a78bfa" roughness="0.8"
+      animation="property:rotation;to:0 360 0;loop:true;dur:35000;easing:linear"></a-sphere>
+    <a-sphere position="60 35 -70" radius="10" color="#f87171" roughness="0.75"
+      animation="property:rotation;to:0 360 0;loop:true;dur:28000;easing:linear"></a-sphere>
+    <a-sphere position="0 60 -100" radius="20" color="#fde68a" roughness="0.65"
+      animation="property:rotation;to:0 360 0;loop:true;dur:60000;easing:linear"></a-sphere>
+
+    <!-- Освітлення Cosmic Hall -->
+    <a-light type="ambient" color="#e8f0ff" intensity="1.6"></a-light>
+    <a-light type="point" color="#a78bfa" intensity="0.6" position="-15 8 0"
+      animation="property:intensity;from:0.4;to:0.8;loop:true;dur:3000;direction:alternate"></a-light>
+    <a-light type="point" color="#7dd3fc" intensity="0.6" position="15 8 0"
+      animation="property:intensity;from:0.4;to:0.8;loop:true;dur:4000;direction:alternate"></a-light>
+
+    <!-- Сцена -->
+    <a-box width="10" height="0.5" depth="6" position="0 0.25 -15"
+      material="color:#1a2040;opacity:0.85"></a-box>
+    <a-cylinder height="1.4" radius="0.04" position="0 1.2 -15"
+      material="color:#ffffff;opacity:0.6"></a-cylinder>
+    <a-light type="spot" color="#fff8e0" intensity="2.0" position="0 9 -12"
+      target="#stage-center" angle="35"></a-light>
+    <a-entity id="stage-center" position="0 0 -15"></a-entity>
+
+    <!-- Disco lights -->
+    <a-light type="point" color="#f472b6" intensity="0" position="-10 8 -10" id="disco1"
+      animation__color="property:light.color;from:#f472b6;to:#60a5fa;loop:true;dur:800;direction:alternate"
+      animation__pos="property:position;from:-10 8 -10;to:10 8 10;loop:true;dur:2000;direction:alternate"></a-light>
+
+    <!-- Lounge дивани -->
+    <a-box width="3" height="0.6" depth="1.2" position="-14 0.3 -5"
+      material="color:#f8f5f0;roughness:0.95"></a-box>
+    <a-box width="1.2" height="1.2" depth="1.2" position="-15.5 0.6 -5"
+      material="color:#f0ede8;roughness:0.95"></a-box>
+    <a-box width="3" height="0.6" depth="1.2" position="14 0.3 -5"
+      material="color:#f8f5f0;roughness:0.95"></a-box>
+    <a-box width="1.2" height="1.2" depth="1.2" position="15.5 0.6 -5"
+      material="color:#f0ede8;roughness:0.95"></a-box>
+
+    <!-- Журнальні столики -->
+    <a-cylinder height="0.05" radius="0.6" position="-12 0.4 -5"
+      material="color:#dde8ff;opacity:0.5;transparent:true;metalness:0.8"></a-cylinder>
+    <a-cylinder height="0.05" radius="0.6" position="12 0.4 -5"
+      material="color:#dde8ff;opacity:0.5;transparent:true;metalness:0.8"></a-cylinder>
+
+    <!-- Рослини (placeholder cylinders) -->
+    <a-cylinder height="0.8" radius="0.25" position="-17 0.4 -17"
+      material="color:#f5f5f0;roughness:0.95"></a-cylinder>
+    <a-cylinder height="1.2" radius="0.2" position="-17 1.0 -17"
+      material="color:#4ade80;roughness:0.8"></a-cylinder>
+
+    <a-cylinder height="0.8" radius="0.25" position="17 0.4 -17"
+      material="color:#f5f5f0;roughness:0.95"></a-cylinder>
+    <a-cylinder height="1.4" radius="0.2" position="17 1.1 -17"
+      material="color:#22c55e;roughness:0.8"></a-cylinder>
+
+    <a-cylinder height="0.7" radius="0.2" position="-17 0.35 5"
+      material="color:#f5f5f0;roughness:0.95"></a-cylinder>
+    <a-cylinder height="1.0" radius="0.18" position="-17 0.9 5"
+      material="color:#86efac;roughness:0.8"></a-cylinder>
+
+    <a-cylinder height="0.7" radius="0.2" position="17 0.35 5"
+      material="color:#f5f5f0;roughness:0.95"></a-cylinder>
+    <a-cylinder height="1.1" radius="0.18" position="17 0.9 5"
+      material="color:#4ade80;roughness:0.8"></a-cylinder>
+
+    <!-- Портал назад до холу -->
+    <a-plane width="5" height="7" position="0 3.5 18"
+      material="color:#f59e0b;opacity:0.6;transparent:true"
+      class="clickable" onclick="teleport(0, 1.6, 0, 0)"></a-plane>
+    <a-text value="Хол" position="0 7.2 18.1" align="center" color="#fcd34d" width="5" rotation="0 180 0"></a-text>
+
+  </a-entity>
+
+  <!-- ══════════════════════════════════════════
+       КАМЕРА — старт у головному холі
+  ══════════════════════════════════════════ -->
+  <a-entity id="player" position="0 1.6 8">
+    <a-camera id="cam" wasd-controls look-controls>
+      <a-cursor color="#ffffff" opacity="0.8" raycaster="objects: .clickable"></a-cursor>
+    </a-camera>
+  </a-entity>
+
+  <!-- Загальний skybox -->
+  <a-sky color="#e8f0ff"></a-sky>
+
 </a-scene>
+
+<script>
+function teleport(x, y, z, rotY) {
+  const player = document.getElementById('player');
+  const cam = document.getElementById('cam');
+  player.setAttribute('position', {x, y, z});
+  if (rotY !== undefined) {
+    cam.setAttribute('rotation', {x: 0, y: rotY, z: 0});
+  }
+}
+</script>
+
 </body>
 </html>
