@@ -1,0 +1,22 @@
+name: Deploy VR World
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build gallery with Pinata key
+        run: |
+          sed "s|PINATA_GATEWAY_TOKEN|${{ secrets.PINATA_KEY }}|g" gallery.template.js > gallery.js
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          exclude_assets: '.github,gallery.template.js,build.sh,.env'
