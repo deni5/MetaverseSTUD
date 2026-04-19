@@ -28,7 +28,8 @@ const WALL_POSITIONS = [
 function ipfsUrl(uri) {
   if (!uri) return "https://picsum.photos/seed/nft/400/400";
   const hash = uri.startsWith("ipfs://") ? uri.slice(7) : uri;
-  return `https://cloudflare-ipfs.com/ipfs/${hash}`;
+  return `https://ipfs.io/ipfs/${hash}`
+  // fallback handled in placeNFT;
 }
 
 async function rpcCall(method, params) {
