@@ -160,3 +160,5 @@ document.addEventListener("DOMContentLoaded", () => {
   const scene = document.querySelector("a-scene");
   scene.hasLoaded ? buildGallery() : scene.addEventListener("loaded", buildGallery);
 });
+
+window.buildGallery = buildGallery;
