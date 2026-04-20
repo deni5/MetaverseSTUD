@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>MetaverseSTUD</title>
   <script src="./aframe.min.js"></script>
-  <script src="./gallery.js"></script>
+  
   <style>
     #ui { position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
           background:rgba(0,0,0,0.55); color:#fff; padding:8px 20px;
@@ -417,5 +417,22 @@
   });
 </script>
 
+<script>
+const CONTRACT = "0x19a9D64Fe37e02f7a07f3749fC1c58a6bcEa5E77";
+const RPC = "https://ethereum-sepolia-rpc.publicnode.com";
+const PINATA = "https://jade-improved-centipede-840.mypinata.cloud/ipfs/";
+const PKEY = "9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU";
+const WP = [{x:-12,y:4,z:-9.6,ry:0},{x:-8,y:4,z:-9.6,ry:0},{x:-4,y:4,z:-9.6,ry:0},{x:0,y:4,z:-9.6,ry:0},{x:4,y:4,z:-9.6,ry:0},{x:8,y:4,z:-9.6,ry:0},{x:12,y:4,z:-9.6,ry:0},{x:-12,y:1.5,z:-9.6,ry:0},{x:-8,y:1.5,z:-9.6,ry:0},{x:-4,y:1.5,z:-9.6,ry:0},{x:0,y:1.5,z:-9.6,ry:0},{x:4,y:1.5,z:-9.6,ry:0},{x:8,y:1.5,z:-9.6,ry:0},{x:12,y:1.5,z:-9.6,ry:0}];
+function iUrl(u){if(!u)return null;if(u.startsWith("ipfs://"))return PINATA+u.slice(7)+"?pinataGatewayToken="+PKEY;if(u.includes("mypinata.cloud"))return u.includes("?")?u:u+"?pinataGatewayToken="+PKEY;if(u.startsWith("http"))return u;return PINATA+u+"?pinataGatewayToken="+PKEY;}
+async function rpc(m,p){const r=await fetch(RPC,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({jsonrpc:"2.0",id:1,method:m,params:p})});return (await r.json()).result;}
+function enc(s,id){return s+id.toString(16).padStart(64,"0");}
+function decStr(h){if(!h||h==="0x")return "";try{const c=h.slice(2);const l=parseInt(c.slice(64,128),16)*2;return decodeURIComponent(c.slice(128,128+l).replace(/../g,"%$&"));}catch{return "";}}
+function decAddr(h){return h&&h.length>=40?"0x"+h.slice(-40):"";}
+function short(a){return a?a.slice(0,6)+"..."+a.slice(-4):"";}
+function place(scene,pos,meta,id,own){const g=document.createElement("a-entity");g.setAttribute("position",pos.x+" "+pos.y+" "+pos.z);g.setAttribute("rotation","0 "+(pos.ry||0)+" 0");const fr=document.createElement("a-plane");fr.setAttribute("width","2.3");fr.setAttribute("height","2.3");fr.setAttribute("material","color:#1a0e00");fr.setAttribute("position","0 0 -0.03");g.appendChild(fr);const im=document.createElement("a-plane");im.setAttribute("width","2.0");im.setAttribute("height","2.0");const url=iUrl(meta.image);if(url)im.setAttribute("material","src:"+url+";crossOrigin:anonymous");else im.setAttribute("material","color:#2a1a4a");g.appendChild(im);const lb=document.createElement("a-plane");lb.setAttribute("width","2.3");lb.setAttribute("height","0.7");lb.setAttribute("position","0 -1.35 -0.01");lb.setAttribute("material","color:#0d0800");g.appendChild(lb);function txt(v,p,c,w){const e=document.createElement("a-entity");e.setAttribute("position",p);e.setAttribute("text","value: "+v+"; align: center; color: "+c+"; width: "+w+"; wrapCount: 24");return e;}g.appendChild(txt(meta.name||"NFT #"+id,"0 -1.18 0.02","#FFD700",2.2));g.appendChild(txt(short(own),"0 -1.45 0.02","#c8a96e",1.8));g.appendChild(txt("#"+id,"-0.9 1.1 0.02","#FFD700",1.4));scene.appendChild(g);}
+async function loadNFT(scene,id,pos){try{const uh=await rpc("eth_call",[{to:CONTRACT,data:enc("0xc87b56dd",id)},"latest"]);const uri=decStr(uh);if(!uri)return;let meta;if(uri.startsWith("data:application/json;base64,"))meta=JSON.parse(atob(uri.slice(29)));else if(uri.startsWith("data:application/json,"))meta=JSON.parse(decodeURIComponent(uri.slice(22)));else{const r=await fetch(iUrl(uri));meta=await r.json();}const oh=await rpc("eth_call",[{to:CONTRACT,data:enc("0x6352211e",id)},"latest"]);place(scene,pos,meta,id,decAddr(oh));}catch(e){console.warn("NFT #"+id,e);place(scene,pos,{name:"NFT #"+id,image:null},id,"");}}
+async function buildGallery(){const scene=document.querySelector("a-scene");for(let i=0;i<WP.length;i++){loadNFT(scene,i,WP[i]);await new Promise(r=>setTimeout(r,200));}}
+document.addEventListener("DOMContentLoaded",()=>{const s=document.querySelector("a-scene");s.hasLoaded?buildGallery():s.addEventListener("loaded",buildGallery);});
+</script>
 </body>
 </html>
