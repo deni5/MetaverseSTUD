@@ -1,5 +1,5 @@
 const CONTRACT = "0x19a9D64Fe37e02f7a07f3749fC1c58a6bcEa5E77";
-const RPC = "https://rpc.sepolia.org";
+const RPC = "https://ethereum-sepolia-rpc.publicnode.com";
 const TOTAL = 51;
 
 const WALL_POSITIONS = [
@@ -25,11 +25,15 @@ const WALL_POSITIONS = [
   { x:  14, y: 4,   z:  3,   ry: -90 },
 ];
 
+const PINATA = "https://jade-improved-centipede-840.mypinata.cloud/ipfs/";
+const 9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU = "9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU";
+
 function ipfsUrl(uri) {
-  if (!uri) return "https://picsum.photos/seed/nft/400/400";
-  const hash = uri.startsWith("ipfs://") ? uri.slice(7) : uri;
-  return `https://jade-improved-centipede-840.mypinata.cloud/ipfs/${hash}?pinataGatewayToken=9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU`
-  // fallback handled in placeNFT;
+  if (!uri) return null;
+  if (uri.startsWith("ipfs://")) return PINATA + uri.slice(7) + "?pinataGatewayToken=" + 9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU;
+  if (uri.includes("mypinata.cloud")) return uri.includes("?") ? uri : uri + "?pinataGatewayToken=" + 9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU;
+  if (uri.startsWith("https://") || uri.startsWith("http://")) return uri;
+  return PINATA + uri + "?pinataGatewayToken=" + 9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU;
 }
 
 async function rpcCall(method, params) {
@@ -91,11 +95,15 @@ function placeNFT(scene, pos, metadata, tokenId, owner) {
   frame.setAttribute("position", "0 0 -0.03");
   group.appendChild(frame);
 
-  const imgSrc = ipfsUrl(metadata.image);
+  const imgUrl = ipfsUrl(metadata.image);
   const img = document.createElement("a-plane");
   img.setAttribute("width", "2.0");
   img.setAttribute("height", "2.0");
-  img.setAttribute("material", `src:${imgSrc};crossOrigin:anonymous`);
+  if (imgUrl) {
+    img.setAttribute("material", `src:${imgUrl};crossOrigin:anonymous`);
+  } else {
+    img.setAttribute("material", "color:#2a1a4a");
+  }
   group.appendChild(img);
 
   const labelBg = document.createElement("a-plane");
@@ -105,8 +113,7 @@ function placeNFT(scene, pos, metadata, tokenId, owner) {
   labelBg.setAttribute("material", "color:#0d0800");
   group.appendChild(labelBg);
 
-  const titleText = metadata.name || `NFT #${tokenId}`;
-  group.appendChild(makeText(titleText, "0 -1.18 0.02", "#FFD700", 2.2, 22));
+  group.appendChild(makeText(metadata.name || `NFT #${tokenId}`, "0 -1.18 0.02", "#FFD700", 2.2, 22));
   group.appendChild(makeText(shortAddr(owner), "0 -1.45 0.02", "#c8a96e", 1.8, 20));
   group.appendChild(makeText(`#${tokenId}`, "-0.9 1.1 0.02", "#FFD700", 1.4, 10));
 
@@ -121,15 +128,20 @@ async function loadNFT(scene, tokenId, pos) {
     const uri = decodeString(uriHex);
     if (!uri) return;
 
-    const metaRes = await fetch(ipfsUrl(uri));
-    const metadata = await metaRes.json();
+    let metadata;
+    if (uri.startsWith("data:application/json;base64,")) {
+      metadata = JSON.parse(atob(uri.slice(29)));
+    } else if (uri.startsWith("data:application/json,")) {
+      metadata = JSON.parse(decodeURIComponent(uri.slice(22)));
+    } else {
+      const metaRes = await fetch(ipfsUrl(uri));
+      metadata = await metaRes.json();
+    }
 
     const ownerHex = await rpcCall("eth_call", [
       { to: CONTRACT, data: encodeCall("0x6352211e", tokenId) }, "latest"
     ]);
-    const owner = decodeAddress(ownerHex);
-
-    placeNFT(scene, pos, metadata, tokenId, owner);
+    placeNFT(scene, pos, metadata, tokenId, decodeAddress(ownerHex));
   } catch (e) {
     console.warn(`NFT #${tokenId}:`, e);
     placeNFT(scene, pos, { name: `NFT #${tokenId}`, image: null }, tokenId, "");
