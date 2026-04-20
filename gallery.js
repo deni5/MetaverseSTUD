@@ -28,7 +28,7 @@ const WALL_POSITIONS = [
 function ipfsUrl(uri) {
   if (!uri) return "https://picsum.photos/seed/nft/400/400";
   const hash = uri.startsWith("ipfs://") ? uri.slice(7) : uri;
-  return `https://jade-improved-centipede-840.mypinata.cloud/ipfs/${hash}`
+  return `https://jade-improved-centipede-840.mypinata.cloud/ipfs/${hash}?pinataGatewayToken=9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU`
   // fallback handled in placeNFT;
 }
 
