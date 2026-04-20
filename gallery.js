@@ -30,10 +30,10 @@ const 9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU = "9kVM15
 
 function ipfsUrl(uri) {
   if (!uri) return null;
-  if (uri.startsWith("ipfs://")) return PINATA + uri.slice(7) + "?pinataGatewayToken=" + 9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU;
-  if (uri.includes("mypinata.cloud")) return uri.includes("?") ? uri : uri + "?pinataGatewayToken=" + 9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU;
+  if (uri.startsWith("ipfs://")) return PINATA + uri.slice(7) + "?pinataGatewayToken=9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU";
+  if (uri.includes("mypinata.cloud")) return uri.includes("?") ? uri : uri + "?pinataGatewayToken=9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU";
   if (uri.startsWith("https://") || uri.startsWith("http://")) return uri;
-  return PINATA + uri + "?pinataGatewayToken=" + 9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU;
+  return PINATA + uri + "?pinataGatewayToken=9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU";
 }
 
 async function rpcCall(method, params) {
