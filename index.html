@@ -213,33 +213,33 @@
   <a-entity id="nft-gallery" position="-60 0 0">
 
     <!-- Кругла підлога -->
-    <a-cylinder height="0.1" radius="22" position="0 0 0"
+    <a-cylinder height="0.1" radius="35" position="0 0 0"
       material="color:#0d0d1a;roughness:0.8;metalness:0.3"></a-cylinder>
 
     <!-- Стеля -->
-    <a-cylinder height="0.3" radius="22" position="0 10 0"
+    <a-cylinder height="0.3" radius="35" position="0 20 0"
       material="color:#080810;roughness:0.9"></a-cylinder>
 
     <!-- Кругла стіна -->
-    <a-cylinder height="10" radius="22" position="0 5 0"
+    <a-cylinder height="20" radius="35" position="0 10 0"
       material="color:#0a0a18;roughness:0.85;side:back"></a-cylinder>
 
     <!-- Центральний світильник -->
-    <a-sphere radius="0.8" position="0 9.5 0"
+    <a-sphere radius="1.2" position="0 19 0"
       material="color:#ffffff;emissive:#8888ff;emissiveIntensity:0.6"></a-sphere>
-    <a-light type="point" color="#aaaaff" intensity="1.2" position="0 9 0" distance="40"></a-light>
+    <a-light type="point" color="#aaaaff" intensity="2.0" position="0 18 0" distance="60"></a-light>
     <a-light type="ambient" color="#1a1a2e" intensity="0.8"></a-light>
 
     <!-- Паркетна підлога з відбиттям -->
-    <a-plane width="44" height="44" rotation="-90 0 0" position="0 0.05 0"
+    <a-plane width="70" height="70" rotation="-90 0 0" position="0 0.05 0"
       material="color:#1a1a2e;roughness:0.1;metalness:0.5"></a-plane>
 
     <!-- Портал назад до холу -->
-    <a-plane width="4" height="7" position="21 3.5 0" rotation="0 -90 0"
+    <a-plane width="5" height="9" position="33 4.5 0" rotation="0 -90 0"
       material="color:#f59e0b;opacity:0.65;transparent:true"></a-plane>
     <a-text value="Хол" position="21 7.2 0" align="center"
       color="#fcd34d" width="4" rotation="0 -90 0"></a-text>
-    <a-plane width="4" height="7" position="21 3.5 0" rotation="0 -90 0"
+    <a-plane width="5" height="9" position="33 4.5 0" rotation="0 -90 0"
       class="gaze-portal" material="opacity:0;transparent:true"
       data-dest-x="0" data-dest-y="1.6" data-dest-z="0" data-rot="0"
       data-room="Головний хол"></a-plane>
@@ -614,7 +614,7 @@ async function loadGalleryNFT(scene, id, pos, rot){
 async function buildGallery(){
   const scene = document.querySelector("a-scene");
   const GALLERY_X = -60;
-  const RADIUS = 20;
+  const RADIUS = 32;
   const TOTAL = 20;
 
   for(let i=0;i<TOTAL;i++){
