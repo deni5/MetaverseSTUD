@@ -552,7 +552,7 @@ function placeNFT(scene, pos, rot, meta, id, own){
   img.setAttribute("width","2.8");
   img.setAttribute("height","2.8");
   const url = iUrl(meta.image);
-  if(url) img.setAttribute("material",`src:${url};crossOrigin:anonymous`);
+  if(url) img.setAttribute("material",`src:${url};transparent:false`);
   else img.setAttribute("material","color:#2a1a4a");
   img.setAttribute("position","0 0.2 0");
   g.appendChild(img);
