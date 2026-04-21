@@ -5,617 +5,317 @@
   <title>MetaverseSTUD</title>
   <script src="./aframe.min.js"></script>
   <style>
-    #ui { position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
-          background:rgba(0,0,0,0.6); color:#fff; padding:8px 20px;
-          border-radius:20px; font-family:sans-serif; font-size:13px;
-          pointer-events:none; z-index:999; }
-    #room-label { position:fixed; top:20px; left:50%; transform:translateX(-50%);
-          background:rgba(0,0,0,0.5); color:#fff; padding:6px 18px;
-          border-radius:20px; font-family:sans-serif; font-size:14px; font-weight:500;
-          pointer-events:none; z-index:999; }
+    #ui{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);color:#fff;padding:8px 20px;border-radius:20px;font-family:sans-serif;font-size:13px;pointer-events:none;z-index:999}
+    #room-label{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.5);color:#fff;padding:6px 18px;border-radius:20px;font-family:sans-serif;font-size:14px;font-weight:500;pointer-events:none;z-index:999}
   </style>
 </head>
 <body>
 <div id="ui">WASD — рух · Миша — погляд · Дивись на портал 2 сек → перехід</div>
 <div id="room-label">Головний хол</div>
-
 <a-scene>
+<a-assets>
+  <img id="cuneiform" src="./assets/cuneiform.jpg" crossorigin="anonymous">
+  <img id="dean" src="./assets/dean.jpg" crossorigin="anonymous">
+  <video id="nft-video-15" src="./assets/nft15.mp4" autoplay loop muted playsinline crossorigin="anonymous"></video>
+</a-assets>
+<a-sky color="#080400"></a-sky>
 
-  <a-assets>
-    <img id="cuneiform" src="./assets/cuneiform.jpg" crossorigin="anonymous">
-    <img id="dean" src="./assets/dean.jpg" crossorigin="anonymous">
-    <video id="nft-video-15" src="./assets/nft15.mp4" autoplay loop muted playsinline crossorigin="anonymous"></video>
-  </a-assets>
+<!-- ═══════════════════════════════════════
+     ГОЛОВНИЙ ХОЛ  центр: 0,0,0
+═══════════════════════════════════════ -->
+<a-entity id="main-hall">
+  <!-- Підлога -->
+  <a-plane width="80" height="60" rotation="-90 0 0" position="0 0 0" material="color:#1a1208;roughness:0.95"></a-plane>
+  <!-- Стеля -->
+  <a-plane width="80" height="60" rotation="90 0 0" position="0 28 0" material="color:#0d0800;roughness:1"></a-plane>
+  <!-- Стіна північ (алтар) -->
+  <a-plane width="80" height="28" position="0 14 -30" material="src:#cuneiform;repeat:6 3;roughness:0.85"></a-plane>
+  <!-- Стіна схід -->
+  <a-plane width="60" height="28" position="-40 14 0" rotation="0 90 0" material="src:#cuneiform;repeat:4 3;roughness:0.85"></a-plane>
+  <!-- Стіна захід -->
+  <a-plane width="60" height="28" position="40 14 0" rotation="0 -90 0" material="src:#cuneiform;repeat:4 3;roughness:0.85"></a-plane>
 
-  <a-sky color="#0d0500"></a-sky>
+  <!-- Промені сонця -->
+  <a-cylinder height="28" radius="0.6" position="-12 14 -10" material="color:#ffcc44;opacity:0.08;transparent:true;side:double"></a-cylinder>
+  <a-cylinder height="28" radius="1.0" position="0 14 -5" material="color:#ffdd55;opacity:0.10;transparent:true;side:double"></a-cylinder>
+  <a-cylinder height="28" radius="0.6" position="12 14 -10" material="color:#ffcc44;opacity:0.08;transparent:true;side:double"></a-cylinder>
+  <a-cylinder height="28" radius="0.4" position="-6 14 8" material="color:#ffcc44;opacity:0.05;transparent:true;side:double"></a-cylinder>
+  <a-cylinder height="28" radius="0.4" position="6 14 8" material="color:#ffcc44;opacity:0.05;transparent:true;side:double"></a-cylinder>
 
-  <!-- ══════════════════════════════════════════
-       ГОЛОВНИЙ ХОЛ — Вавілонський храм
-  ══════════════════════════════════════════ -->
-  <a-entity id="main-hall">
+  <!-- Освітлення -->
+  <a-light type="ambient" color="#3d2200" intensity="0.5"></a-light>
+  <a-light type="point" color="#ffaa22" intensity="1.2" position="-12 26 -10"></a-light>
+  <a-light type="point" color="#ffcc44" intensity="1.5" position="0 26 -5"></a-light>
+  <a-light type="point" color="#ffaa22" intensity="1.2" position="12 26 -10"></a-light>
 
-    <!-- Підлога — темний камінь -->
-    <a-plane width="80" height="60" rotation="-90 0 0" position="0 0 0"
-      material="color:#1a1208;roughness:0.95"></a-plane>
-    <a-plane width="40" height="30" rotation="-90 0 0" position="0 0.01 0"
-      material="color:#2a1a08;opacity:0.4;transparent:true;metalness:0.3;roughness:0.6"></a-plane>
+  <!-- АЛТАР -->
+  <a-box width="12" height="0.6" depth="3" position="0 0.3 -27" material="color:#2a1a00;roughness:0.85;metalness:0.2"></a-box>
+  <a-box width="10" height="0.4" depth="2.5" position="0 0.8 -27" material="color:#3a2800;roughness:0.8;metalness:0.3"></a-box>
+  <!-- Рамка портрету -->
+  <a-box width="8" height="20" depth="0.5" position="0 11 -29.5" material="color:#1a0e00;roughness:0.95"></a-box>
+  <a-plane width="7.6" height="19.5" position="0 11 -29.2" material="color:#c8a54a;roughness:0.7;metalness:0.4"></a-plane>
+  <a-plane width="7.0" height="18.8" position="0 11 -29.0" material="src:#dean;roughness:0.6"></a-plane>
+  <a-text value="Завідуючий кафедрою" position="0 1.8 -28" align="center" color="#ffd700" width="8"></a-text>
+  <!-- Свічки -->
+  <a-cylinder height="0.5" radius="0.06" position="-2 0.55 -26.5" material="color:#f5f0e0"></a-cylinder>
+  <a-cylinder height="0.5" radius="0.06" position="2 0.55 -26.5" material="color:#f5f0e0"></a-cylinder>
+  <a-sphere radius="0.07" position="-2 0.82 -26.5" material="color:#ffcc00;emissive:#ffaa00;emissiveIntensity:0.9"></a-sphere>
+  <a-sphere radius="0.07" position="2 0.82 -26.5" material="color:#ffcc00;emissive:#ffaa00;emissiveIntensity:0.9"></a-sphere>
+  <a-light type="point" color="#ff8800" intensity="0.5" position="-2 1.5 -26.5" distance="4"></a-light>
+  <a-light type="point" color="#ff8800" intensity="0.5" position="2 1.5 -26.5" distance="4"></a-light>
+  <a-light type="spot" color="#ffeeaa" intensity="4.0" position="0 27 -18" target="#altar-target" angle="18"></a-light>
+  <a-entity id="altar-target" position="0 11 -29"></a-entity>
 
-    <!-- Стеля з отворами для сонця -->
-    <a-plane width="80" height="60" rotation="90 0 0" position="0 30 0"
-      material="color:#0d0800;roughness:1"></a-plane>
-
-    <!-- Промені сонця крізь отвори -->
-    <a-entity position="-15 30 -10">
-      <a-cylinder height="22" radius="0.5" position="0 -11 0"
-        material="color:#ffcc44;opacity:0.07;transparent:true;side:double"></a-cylinder>
-      <a-cylinder height="22" radius="1.2" position="0 -11 0"
-        material="color:#ffaa22;opacity:0.03;transparent:true;side:double"></a-cylinder>
-    </a-entity>
-    <a-entity position="0 30 -5">
-      <a-cylinder height="22" radius="0.8" position="0 -11 0"
-        material="color:#ffdd55;opacity:0.10;transparent:true;side:double"></a-cylinder>
-      <a-cylinder height="22" radius="2.0" position="0 -11 0"
-        material="color:#ffcc44;opacity:0.04;transparent:true;side:double"></a-cylinder>
-    </a-entity>
-    <a-entity position="15 30 -10">
-      <a-cylinder height="22" radius="0.5" position="0 -11 0"
-        material="color:#ffcc44;opacity:0.07;transparent:true;side:double"></a-cylinder>
-      <a-cylinder height="22" radius="1.2" position="0 -11 0"
-        material="color:#ffaa22;opacity:0.03;transparent:true;side:double"></a-cylinder>
-    </a-entity>
-    <a-entity position="-5 22 5">
-      <a-cylinder height="22" radius="0.4" position="0 -11 0"
-        material="color:#ffcc44;opacity:0.05;transparent:true;side:double"></a-cylinder>
-    </a-entity>
-    <a-entity position="5 22 3">
-      <a-cylinder height="22" radius="0.35" position="0 -11 0"
-        material="color:#ffcc44;opacity:0.04;transparent:true;side:double"></a-cylinder>
-    </a-entity>
-
-    <!-- Освітлення від сонячних променів -->
-    <a-light type="point" color="#ffaa22" intensity="1.0" position="-8 20 -5"></a-light>
-    <a-light type="point" color="#ffcc44" intensity="1.4" position="0 20 -2"></a-light>
-    <a-light type="point" color="#ffaa22" intensity="1.0" position="8 20 -5"></a-light>
-    <a-light type="point" color="#ff8800" intensity="0.5" position="-5 20 5"></a-light>
-    <a-light type="point" color="#ff8800" intensity="0.4" position="5 20 3"></a-light>
-    <a-light type="ambient" color="#3d2200" intensity="0.5"></a-light>
-    <a-light type="directional" color="#ffaa44" intensity="0.3" position="2 20 5"></a-light>
-
-    <!-- Стіни з клінописом — північ -->
-    <a-plane width="80" height="30" position="0 15 -30"
-      material="src:#cuneiform;repeat:6 3;roughness:0.85"></a-plane>
-
-    <!-- Стіни з клінописом — схід -->
-    <a-plane width="60" height="30" position="-40 15 0" rotation="0 90 0"
-      material="src:#cuneiform;repeat:4 3;roughness:0.85"></a-plane>
-
-    <!-- Стіни з клінописом — захід -->
-    <a-plane width="60" height="30" position="40 15 0" rotation="0 -90 0"
-      material="src:#cuneiform;repeat:4 3;roughness:0.85"></a-plane>
-
-    <!-- Клінописні таблички на стінах -->
-    <a-plane width="1.2" height="0.8" position="-18 5 -29.8"
-      material="color:#c8a54a;roughness:0.8"></a-plane>
-    <a-plane width="1.2" height="0.8" position="-6 5 -29.8"
-      material="color:#b8953a;roughness:0.8"></a-plane>
-    <a-plane width="1.2" height="0.8" position="6 5 -29.8"
-      material="color:#c8a54a;roughness:0.8"></a-plane>
-    <a-plane width="1.2" height="0.8" position="-12 5 -29.8"
-      material="color:#b8953a;roughness:0.8"></a-plane>
-    <a-plane width="1.2" height="0.8" position="12 5 -29.8"
-      material="color:#c8a54a;roughness:0.8"></a-plane>
-
-    <!-- АЛТАР з портретом завідуючого — величний до стелі -->
-    <a-box width="10" height="0.6" depth="3" position="0 0.3 -25"
-      material="color:#2a1a00;roughness:0.85;metalness:0.2"></a-box>
-    <a-box width="8" height="0.4" depth="2.5" position="0 0.8 -25"
-      material="color:#3a2800;roughness:0.8;metalness:0.3"></a-box>
-    <a-box width="7" height="19" depth="0.4" position="0 10 -26"
-      material="color:#1a0e00;roughness:0.95"></a-box>
-    <!-- Золота рамка -->
-    <a-plane width="7.4" height="9.4" position="0 9 -14.1"
-      material="color:#c8a54a;roughness:0.6;metalness:0.5"></a-plane>
-    <!-- Портрет -->
-    <a-plane width="6.8" height="8.8" position="0 10 -25.8"
-      material="src:#dean;roughness:0.5"></a-plane>
-    <!-- Верхній орнамент -->
-    <a-box width="7.6" height="0.4" depth="0.3" position="0 19 -26"
-      material="color:#c8a54a;roughness:0.6;metalness:0.5"></a-box>
-    <!-- Нижній орнамент -->
-    <a-box width="7.6" height="0.4" depth="0.3" position="0 4 -26"
-      material="color:#c8a54a;roughness:0.6;metalness:0.5"></a-box>
-    <a-text value="Завідуючий кафедрою" position="0 1.5 -24.5"
-      align="center" color="#ffd700" width="7"></a-text>
-    <a-light type="spot" color="#ffeeaa" intensity="3.0" position="0 28 -18"
-      target="#altar" angle="20"></a-light>
-    <a-light type="spot" color="#ffdd88" intensity="2.0" position="-5 28 -18"
-      target="#altar" angle="15"></a-light>
-    <a-light type="spot" color="#ffdd88" intensity="2.0" position="5 28 -18"
-      target="#altar" angle="15"></a-light>
-    <a-entity id="altar" position="0 10 -25.8"></a-entity>
-
-    <!-- Свічки біля алтаря -->
-    <a-cylinder height="0.4" radius="0.05" position="-1.5 0.7 -24.5"
-      material="color:#f5f0e0"></a-cylinder>
-    <a-cylinder height="0.4" radius="0.05" position="1.5 0.7 -24.5"
-      material="color:#f5f0e0"></a-cylinder>
-    <a-sphere radius="0.06" position="-1.5 0.92 -24.5"
-      material="color:#ffcc00;emissive:#ffaa00;emissiveIntensity:0.8"></a-sphere>
-    <a-sphere radius="0.06" position="1.5 0.92 -24.5"
-      material="color:#ffcc00;emissive:#ffaa00;emissiveIntensity:0.8"></a-sphere>
-    <a-light type="point" color="#ff8800" intensity="0.4" position="-1.5 1.2 -24.5" distance="3"></a-light>
-    <a-light type="point" color="#ff8800" intensity="0.4" position="1.5 1.2 -24.5" distance="3"></a-light>
-
-    <!-- Портал → NFT Галерея (замість старого коридору) -->
-    <a-entity position="-38 0 0">
-      <a-plane width="5" height="8" position="0 4 0" rotation="0 90 0"
-        material="color:#7c3aed;opacity:0.75;transparent:true"></a-plane>
-      <a-text value="NFT Галерея" position="0 8.5 0" align="center"
-        color="#a78bfa" width="6" rotation="0 90 0"></a-text>
-      <a-plane width="5" height="8" position="0 4 0" rotation="0 90 0"
-        class="gaze-portal" material="opacity:0;transparent:true"
-        data-dest-x="-120" data-dest-y="1.6" data-dest-z="0" data-rot="90" 
-        data-room="NFT Галерея"></a-plane>
-    </a-entity>
-
-    <!-- Портал → Технарі -->
-    <a-entity position="38 0 0">
-      <a-plane width="5" height="8" position="0 4 0" rotation="0 -90 0"
-        material="color:#2563eb;opacity:0.75;transparent:true"></a-plane>
-      <a-text value="Технарі" position="0 8.5 0" align="center"
-        color="#60a5fa" width="6" rotation="0 -90 0"></a-text>
-      <a-plane width="5" height="8" position="0 4 0" rotation="0 -90 0"
-        class="gaze-portal" material="opacity:0;transparent:true"
-        data-dest-x="120" data-dest-y="1.6" data-dest-z="0" data-rot="-90"
-        data-room="Коридор технарів"></a-plane>
-    </a-entity>
-
-    <!-- Портал → Проекти -->
-    <a-entity position="0 0 28">
-      <a-plane width="5" height="8" position="0 4 0" rotation="0 180 0"
-        material="color:#0f766e;opacity:0.75;transparent:true"></a-plane>
-      <a-text value="Проекти" position="0 8.5 0" align="center"
-        color="#2dd4bf" width="6" rotation="0 180 0"></a-text>
-      <a-plane width="5" height="8" position="0 4 0" rotation="0 180 0"
-        class="gaze-portal" material="opacity:0;transparent:true"
-        data-dest-x="0" data-dest-y="1.6" data-dest-z="100" data-rot="180"
-        data-room="Кімната проектів"></a-plane>
-    </a-entity>
-
-    <!-- Портал → Cosmic Hall -->
-    <a-entity position="38 0 10">
-      <a-plane width="5" height="8" position="0 4 0" rotation="0 -90 0"
-        material="color:#38bdf8;opacity:0.75;transparent:true"></a-plane>
-      <a-text value="Cosmic Hall" position="0 8.5 0" align="center"
-        color="#7dd3fc" width="6" rotation="0 -90 0"></a-text>
-      <a-plane width="5" height="8" position="0 4 0" rotation="0 -90 0"
-        class="gaze-portal" material="opacity:0;transparent:true"
-        data-dest-x="0" data-dest-y="1.6" data-dest-z="-150" data-rot="0"
-        data-room="Cosmic Hall"></a-plane>
-    </a-entity>
-
+  <!-- ПОРТАЛИ -->
+  <!-- NFT Галерея — ліворуч -->
+  <a-entity position="-39 0 0">
+    <a-plane width="6" height="10" position="0 5 0" rotation="0 90 0" material="color:#7c3aed;opacity:0.75;transparent:true"></a-plane>
+    <a-text value="NFT Галерея" position="0 10.5 0" align="center" color="#a78bfa" width="7" rotation="0 90 0"></a-text>
+    <a-plane width="6" height="10" position="0 5 0" rotation="0 90 0" class="gaze-portal" material="opacity:0;transparent:true" data-dest-x="-120" data-dest-y="1.6" data-dest-z="0" data-rot="90" data-room="NFT Галерея"></a-plane>
   </a-entity>
-
-  <!-- ══════════════════════════════════════════
-       NFT ГАЛЕРЕЯ — кругла зала
-       X: -60
-  ══════════════════════════════════════════ -->
-  <a-entity id="nft-gallery" position="-120 0 0">
-
-    <!-- Кругла підлога -->
-    <a-cylinder height="0.1" radius="50" position="0 0 0"
-      material="color:#0d0d1a;roughness:0.8;metalness:0.3"></a-cylinder>
-
-    <!-- Стеля -->
-    <a-cylinder height="0.3" radius="50" position="0 20 0"
-      material="color:#080810;roughness:0.9"></a-cylinder>
-
-    <!-- Кругла стіна -->
-    <a-cylinder height="20" radius="50" position="0 10 0"
-      material="color:#0a0a18;roughness:0.85;side:back"></a-cylinder>
-
-    <!-- Центральний світильник -->
-    <a-sphere radius="1.2" position="0 19 0"
-      material="color:#ffffff;emissive:#8888ff;emissiveIntensity:0.6"></a-sphere>
-    <a-light type="point" color="#aaaaff" intensity="2.0" position="0 18 0" distance="60"></a-light>
-    <a-light type="ambient" color="#1a1a2e" intensity="0.8"></a-light>
-
-    <!-- Паркетна підлога з відбиттям -->
-    <a-plane width="100" height="100" rotation="-90 0 0" position="0 0.05 0"
-      material="color:#1a1a2e;roughness:0.1;metalness:0.5"></a-plane>
-
-    <!-- Портал назад до холу -->
-    <a-plane width="5" height="9" position="48 4.5 0" rotation="0 -90 0"
-      material="color:#f59e0b;opacity:0.65;transparent:true"></a-plane>
-    <a-text value="Хол" position="21 7.2 0" align="center"
-      color="#fcd34d" width="4" rotation="0 -90 0"></a-text>
-    <a-plane width="5" height="9" position="48 4.5 0" rotation="0 -90 0"
-      class="gaze-portal" material="opacity:0;transparent:true"
-      data-dest-x="0" data-dest-y="1.6" data-dest-z="0" data-rot="0"
-      data-room="Головний хол"></a-plane>
-
-    <!-- NFT рамки розміщуються через JS по колу -->
-
+  <!-- Технарі — праворуч -->
+  <a-entity position="39 0 0">
+    <a-plane width="6" height="10" position="0 5 0" rotation="0 -90 0" material="color:#2563eb;opacity:0.75;transparent:true"></a-plane>
+    <a-text value="Технарі" position="0 10.5 0" align="center" color="#60a5fa" width="7" rotation="0 -90 0"></a-text>
+    <a-plane width="6" height="10" position="0 5 0" rotation="0 -90 0" class="gaze-portal" material="opacity:0;transparent:true" data-dest-x="120" data-dest-y="1.6" data-dest-z="0" data-rot="-90" data-room="Коридор технарів"></a-plane>
   </a-entity>
-
-  <!-- ══════════════════════════════════════════
-       КОРИДОР ТЕХНАРІВ  X=+60
-  ══════════════════════════════════════════ -->
-  <a-entity position="120 0 0">
-    <a-plane width="70" height="10" position="0 5 -6"
-      material="color:#1e3a5f;roughness:0.9"></a-plane>
-    <a-plane width="70" height="10" position="0 5 6" rotation="0 180 0"
-      material="color:#1e3a5f;roughness:0.9"></a-plane>
-    <a-plane width="12" height="10" position="35 5 0" rotation="0 -90 0"
-      material="color:#0c2340;roughness:0.9"></a-plane>
-    <a-plane width="12" height="10" position="-35 5 0" rotation="0 90 0"
-      material="color:#0c2340;roughness:0.9"></a-plane>
-    <a-plane width="70" height="12" rotation="-90 0 0" position="0 0 0"
-      material="color:#0a1628;roughness:0.8"></a-plane>
-    <a-plane width="70" height="12" rotation="90 0 0" position="0 10 0"
-      material="color:#060e1a;roughness:0.9"></a-plane>
-    <a-light type="point" color="#3b82f6" intensity="1.2" position="0 8 0"></a-light>
-
-    <a-plane width="6" height="7" position="0 3.5 -5.8"
-      material="color:#1d4ed8;opacity:0.9"></a-plane>
-    <a-text value="Proof-of-History" position="0 7.2 -5.7" align="center" color="#bfdbfe" width="7"></a-text>
-    <a-text value="Solana · часовий ланцюг" position="0 6.2 -5.7" align="center" color="#93c5fd" width="6"></a-text>
-    <a-plane width="6" height="7" position="0 3.5 -5.8"
-      class="gaze-portal" material="opacity:0;transparent:true"
-      data-dest-x="120" data-dest-y="1.6" data-dest-z="-20" data-rot="0"
-      data-room="Proof-of-History"></a-plane>
-
-    <a-plane width="5" height="7" position="-15 3.5 -5.8"
-      material="color:#020810;opacity:0.98"></a-plane>
-    <a-text value="???" position="-15 7.2 -5.7" align="center" color="#1e3a5f" width="5"></a-text>
-    <a-text value="Скоро відкриття" position="-15 6.2 -5.7" align="center" color="#2563eb" width="5"></a-text>
-    <a-light type="point" color="#3b82f6" intensity="0.2" position="-15 4 -4" distance="6"
-      animation="property:intensity;from:0.05;to:0.5;loop:true;dur:900;direction:alternate"></a-light>
-
-    <a-plane width="5" height="7" position="15 3.5 -5.8"
-      material="color:#020810;opacity:0.98"></a-plane>
-    <a-text value="???" position="15 7.2 -5.7" align="center" color="#1e3a5f" width="5"></a-text>
-    <a-text value="Скоро відкриття" position="15 6.2 -5.7" align="center" color="#2563eb" width="5"></a-text>
-    <a-light type="point" color="#60a5fa" intensity="0.15" position="15 4 -4" distance="6"
-      animation="property:intensity;from:0.03;to:0.4;loop:true;dur:1500;direction:alternate"></a-light>
-
-    <a-plane width="4" height="7" position="-34 3.5 0" rotation="0 90 0"
-      material="color:#f59e0b;opacity:0.65;transparent:true"></a-plane>
-    <a-text value="Хол" position="-34 7.2 0" align="center" color="#fcd34d" width="4" rotation="0 90 0"></a-text>
-    <a-plane width="4" height="7" position="-34 3.5 0" rotation="0 90 0"
-      class="gaze-portal" material="opacity:0;transparent:true"
-      data-dest-x="0" data-dest-y="1.6" data-dest-z="0" data-rot="0"
-      data-room="Головний хол"></a-plane>
-
-    <a-plane width="4" height="7" position="34 3.5 0" rotation="0 -90 0"
-      material="color:#38bdf8;opacity:0.7;transparent:true"></a-plane>
-    <a-text value="Cosmic Hall" position="34 7.2 0" align="center" color="#7dd3fc" width="5" rotation="0 -90 0"></a-text>
-    <a-plane width="4" height="7" position="34 3.5 0" rotation="0 -90 0"
-      class="gaze-portal" material="opacity:0;transparent:true"
-      data-dest-x="0" data-dest-y="1.6" data-dest-z="-150" data-rot="0"
-      data-room="Cosmic Hall"></a-plane>
+  <!-- Проекти — вперед -->
+  <a-entity position="0 0 28">
+    <a-plane width="6" height="10" position="0 5 0" rotation="0 180 0" material="color:#0f766e;opacity:0.75;transparent:true"></a-plane>
+    <a-text value="Проекти" position="0 10.5 0" align="center" color="#2dd4bf" width="7" rotation="0 180 0"></a-text>
+    <a-plane width="6" height="10" position="0 5 0" rotation="0 180 0" class="gaze-portal" material="opacity:0;transparent:true" data-dest-x="0" data-dest-y="1.6" data-dest-z="100" data-rot="180" data-room="Кімната проектів"></a-plane>
   </a-entity>
-
-  <!-- ══════════════════════════════════════════
-       КІМНАТА ПРОЕКТІВ  Z=+50
-  ══════════════════════════════════════════ -->
-  <a-entity position="0 0 100">
-    <a-plane width="24" height="10" position="0 5 -10"
-      material="color:#134e4a;roughness:0.9"></a-plane>
-    <a-plane width="24" height="10" position="0 5 10" rotation="0 180 0"
-      material="color:#134e4a;roughness:0.9"></a-plane>
-    <a-plane width="20" height="10" position="-12 5 0" rotation="0 90 0"
-      material="color:#0f3d3a;roughness:0.9"></a-plane>
-    <a-plane width="20" height="10" position="12 5 0" rotation="0 -90 0"
-      material="color:#0f3d3a;roughness:0.9"></a-plane>
-    <a-plane width="24" height="20" rotation="-90 0 0" position="0 0 0"
-      material="color:#042f2e;roughness:0.8"></a-plane>
-    <a-plane width="24" height="20" rotation="90 0 0" position="0 10 0"
-      material="color:#021f1e;roughness:0.9"></a-plane>
-    <a-light type="point" color="#2dd4bf" intensity="0.9" position="0 8 0"></a-light>
-
-    <a-plane width="16" height="8" position="0 5 -9.8"
-      material="color:#000;opacity:0.95"></a-plane>
-    <a-text value="University Projects" position="0 8.5 -9.7" align="center" color="#2dd4bf" width="12"></a-text>
-    <a-text value="Відео-презентації проектів" position="0 1.5 -9.7" align="center" color="#5eead4" width="8"></a-text>
-
-    <a-plane width="4" height="7" position="0 3.5 9.8" rotation="0 180 0"
-      material="color:#f59e0b;opacity:0.65;transparent:true"></a-plane>
-    <a-text value="Хол" position="0 7.2 9.7" align="center" color="#fcd34d" width="4" rotation="0 180 0"></a-text>
-    <a-plane width="4" height="7" position="0 3.5 9.8" rotation="0 180 0"
-      class="gaze-portal" material="opacity:0;transparent:true"
-      data-dest-x="0" data-dest-y="1.6" data-dest-z="0" data-rot="0"
-      data-room="Головний хол"></a-plane>
+  <!-- Cosmic Hall — назад праворуч -->
+  <a-entity position="30 0 -28">
+    <a-plane width="6" height="10" position="0 5 0" rotation="0 -45 0" material="color:#38bdf8;opacity:0.75;transparent:true"></a-plane>
+    <a-text value="Cosmic Hall" position="0 10.5 0" align="center" color="#7dd3fc" width="7" rotation="0 -45 0"></a-text>
+    <a-plane width="6" height="10" position="0 5 0" rotation="0 -45 0" class="gaze-portal" material="opacity:0;transparent:true" data-dest-x="0" data-dest-y="1.6" data-dest-z="-150" data-rot="0" data-room="Cosmic Hall"></a-plane>
   </a-entity>
+</a-entity>
 
-  <!-- ══════════════════════════════════════════
-       COSMIC HALL  Z=-80
-  ══════════════════════════════════════════ -->
-  <a-entity id="cosmic-hall" position="0 0 -150">
+<!-- ═══════════════════════════════════════
+     NFT ГАЛЕРЕЯ  X=-120
+═══════════════════════════════════════ -->
+<a-entity id="nft-gallery" position="-120 0 0">
+  <a-cylinder height="0.1" radius="50" position="0 0 0" material="color:#0d0d1a;roughness:0.8;metalness:0.3"></a-cylinder>
+  <a-cylinder height="22" radius="50" position="0 11 0" material="color:#0a0a18;roughness:0.85;side:back"></a-cylinder>
+  <a-cylinder height="0.3" radius="50" position="0 22 0" material="color:#080810;roughness:0.9"></a-cylinder>
+  <a-plane width="100" height="100" rotation="-90 0 0" position="0 0.05 0" material="color:#1a1a2e;roughness:0.1;metalness:0.5"></a-plane>
+  <a-sphere radius="1.5" position="0 21 0" material="color:#ffffff;emissive:#8888ff;emissiveIntensity:0.6"></a-sphere>
+  <a-light type="point" color="#aaaaff" intensity="2.5" position="0 20 0" distance="80"></a-light>
+  <a-light type="ambient" color="#1a1a2e" intensity="0.8"></a-light>
+  <!-- Портал → Хол -->
+  <a-plane width="6" height="10" position="49 5 0" rotation="0 -90 0" material="color:#f59e0b;opacity:0.65;transparent:true"></a-plane>
+  <a-text value="Хол" position="49 10.5 0" align="center" color="#fcd34d" width="5" rotation="0 -90 0"></a-text>
+  <a-plane width="6" height="10" position="49 5 0" rotation="0 -90 0" class="gaze-portal" material="opacity:0;transparent:true" data-dest-x="0" data-dest-y="1.6" data-dest-z="0" data-rot="0" data-room="Головний хол"></a-plane>
+</a-entity>
 
-    <!-- Скляні стіни -->
-    <a-box width="50" height="12" depth="50" position="0 6 0"
-      material="color:#b8d4ff;opacity:0.08;transparent:true;side:double"></a-box>
+<!-- ═══════════════════════════════════════
+     КОРИДОР ТЕХНАРІВ  X=+120
+═══════════════════════════════════════ -->
+<a-entity position="120 0 0">
+  <a-plane width="80" height="12" position="0 6 -6" material="color:#1e3a5f;roughness:0.9"></a-plane>
+  <a-plane width="80" height="12" position="0 6 6" rotation="0 180 0" material="color:#1e3a5f;roughness:0.9"></a-plane>
+  <a-plane width="12" height="12" position="40 6 0" rotation="0 -90 0" material="color:#0c2340;roughness:0.9"></a-plane>
+  <a-plane width="12" height="12" position="-40 6 0" rotation="0 90 0" material="color:#0c2340;roughness:0.9"></a-plane>
+  <a-plane width="80" height="12" rotation="-90 0 0" position="0 0 0" material="color:#0a1628;roughness:0.8"></a-plane>
+  <a-plane width="80" height="12" rotation="90 0 0" position="0 12 0" material="color:#060e1a;roughness:0.9"></a-plane>
+  <a-light type="point" color="#3b82f6" intensity="1.5" position="0 10 0"></a-light>
+  <!-- Proof-of-History -->
+  <a-plane width="7" height="9" position="0 4.5 -5.8" material="color:#1d4ed8;opacity:0.9"></a-plane>
+  <a-text value="Proof-of-History" position="0 9.5 -5.7" align="center" color="#bfdbfe" width="8"></a-text>
+  <a-text value="Solana · часовий ланцюг" position="0 8.2 -5.7" align="center" color="#93c5fd" width="7"></a-text>
+  <!-- Темні кімнати -->
+  <a-plane width="6" height="9" position="-18 4.5 -5.8" material="color:#020810;opacity:0.98"></a-plane>
+  <a-text value="Скоро відкриття" position="-18 9.5 -5.7" align="center" color="#2563eb" width="6"></a-text>
+  <a-light type="point" color="#3b82f6" intensity="0.2" position="-18 5 -4" distance="7" animation="property:intensity;from:0.05;to:0.5;loop:true;dur:900;direction:alternate"></a-light>
+  <a-plane width="6" height="9" position="18 4.5 -5.8" material="color:#020810;opacity:0.98"></a-plane>
+  <a-text value="Скоро відкриття" position="18 9.5 -5.7" align="center" color="#2563eb" width="6"></a-text>
+  <a-light type="point" color="#60a5fa" intensity="0.15" position="18 5 -4" distance="7" animation="property:intensity;from:0.03;to:0.4;loop:true;dur:1500;direction:alternate"></a-light>
+  <!-- Портал → Хол -->
+  <a-plane width="5" height="9" position="-39 4.5 0" rotation="0 90 0" material="color:#f59e0b;opacity:0.65;transparent:true"></a-plane>
+  <a-text value="Хол" position="-39 9.5 0" align="center" color="#fcd34d" width="5" rotation="0 90 0"></a-text>
+  <a-plane width="5" height="9" position="-39 4.5 0" rotation="0 90 0" class="gaze-portal" material="opacity:0;transparent:true" data-dest-x="0" data-dest-y="1.6" data-dest-z="0" data-rot="0" data-room="Головний хол"></a-plane>
+  <!-- Портал → Cosmic Hall -->
+  <a-plane width="5" height="9" position="39 4.5 0" rotation="0 -90 0" material="color:#38bdf8;opacity:0.7;transparent:true"></a-plane>
+  <a-text value="Cosmic Hall" position="39 9.5 0" align="center" color="#7dd3fc" width="6" rotation="0 -90 0"></a-text>
+  <a-plane width="5" height="9" position="39 4.5 0" rotation="0 -90 0" class="gaze-portal" material="opacity:0;transparent:true" data-dest-x="0" data-dest-y="1.6" data-dest-z="-150" data-rot="0" data-room="Cosmic Hall"></a-plane>
+</a-entity>
 
-    <!-- Підлога дзеркальна -->
-    <a-plane width="50" height="50" rotation="-90 0 0"
-      material="color:#dde8ff;opacity:0.15;metalness:0.8;roughness:0.1;transparent:true"></a-plane>
+<!-- ═══════════════════════════════════════
+     КІМНАТА ПРОЕКТІВ  Z=+100
+═══════════════════════════════════════ -->
+<a-entity position="0 0 100">
+  <a-plane width="28" height="12" position="0 6 -12" material="color:#134e4a;roughness:0.9"></a-plane>
+  <a-plane width="28" height="12" position="0 6 12" rotation="0 180 0" material="color:#134e4a;roughness:0.9"></a-plane>
+  <a-plane width="24" height="12" position="-14 6 0" rotation="0 90 0" material="color:#0f3d3a;roughness:0.9"></a-plane>
+  <a-plane width="24" height="12" position="14 6 0" rotation="0 -90 0" material="color:#0f3d3a;roughness:0.9"></a-plane>
+  <a-plane width="28" height="24" rotation="-90 0 0" position="0 0 0" material="color:#042f2e;roughness:0.8"></a-plane>
+  <a-plane width="28" height="24" rotation="90 0 0" position="0 12 0" material="color:#021f1e;roughness:0.9"></a-plane>
+  <a-light type="point" color="#2dd4bf" intensity="1.0" position="0 10 0"></a-light>
+  <a-plane width="20" height="10" position="0 6 -11.8" material="color:#000;opacity:0.95"></a-plane>
+  <a-text value="University Projects" position="0 10.5 -11.7" align="center" color="#2dd4bf" width="14"></a-text>
+  <a-text value="Відео-презентації проектів" position="0 1.5 -11.7" align="center" color="#5eead4" width="10"></a-text>
+  <a-plane width="5" height="9" position="0 4.5 11.8" rotation="0 180 0" material="color:#f59e0b;opacity:0.65;transparent:true"></a-plane>
+  <a-text value="Хол" position="0 9.5 11.7" align="center" color="#fcd34d" width="5" rotation="0 180 0"></a-text>
+  <a-plane width="5" height="9" position="0 4.5 11.8" rotation="0 180 0" class="gaze-portal" material="opacity:0;transparent:true" data-dest-x="0" data-dest-y="1.6" data-dest-z="0" data-rot="0" data-room="Головний хол"></a-plane>
+</a-entity>
 
-    <!-- Планети -->
-    <a-sphere position="-80 20 -60" radius="28" color="#f0c06e" roughness="0.7"
-      animation="property:rotation;to:0 360 0;loop:true;dur:40000;easing:linear"></a-sphere>
-    <a-sphere position="90 15 -50" radius="18" color="#7c9fff" roughness="0.6"
-      animation="property:rotation;to:0 360 0;loop:true;dur:55000;easing:linear"></a-sphere>
-    <a-sphere position="-50 50 -90" radius="14" color="#a78bfa" roughness="0.8"
-      animation="property:rotation;to:0 360 0;loop:true;dur:35000;easing:linear"></a-sphere>
-    <a-sphere position="60 35 -70" radius="10" color="#f87171" roughness="0.75"
-      animation="property:rotation;to:0 360 0;loop:true;dur:28000;easing:linear"></a-sphere>
-    <a-sphere position="0 60 -100" radius="20" color="#fde68a" roughness="0.65"
-      animation="property:rotation;to:0 360 0;loop:true;dur:60000;easing:linear"></a-sphere>
-    <a-sphere position="-30 -10 -60" radius="8" color="#6ee7b7" roughness="0.7"
-      animation="property:rotation;to:0 360 15;loop:true;dur:32000;easing:linear"></a-sphere>
+<!-- ═══════════════════════════════════════
+     COSMIC HALL  Z=-150
+═══════════════════════════════════════ -->
+<a-entity id="cosmic-hall" position="0 0 -150">
+  <a-box width="60" height="14" depth="60" position="0 7 0" material="color:#b8d4ff;opacity:0.08;transparent:true;side:double"></a-box>
+  <a-plane width="60" height="60" rotation="-90 0 0" material="color:#dde8ff;opacity:0.15;metalness:0.8;roughness:0.1;transparent:true"></a-plane>
+  <!-- Планети -->
+  <a-sphere position="-80 20 -60" radius="28" color="#f0c06e" roughness="0.7" animation="property:rotation;to:0 360 0;loop:true;dur:40000;easing:linear"></a-sphere>
+  <a-sphere position="90 15 -50" radius="18" color="#7c9fff" roughness="0.6" animation="property:rotation;to:0 360 0;loop:true;dur:55000;easing:linear"></a-sphere>
+  <a-sphere position="-50 50 -90" radius="14" color="#a78bfa" roughness="0.8" animation="property:rotation;to:0 360 0;loop:true;dur:35000;easing:linear"></a-sphere>
+  <a-sphere position="60 35 -70" radius="10" color="#f87171" roughness="0.75" animation="property:rotation;to:0 360 0;loop:true;dur:28000;easing:linear"></a-sphere>
+  <a-sphere position="0 60 -100" radius="20" color="#fde68a" roughness="0.65" animation="property:rotation;to:0 360 0;loop:true;dur:60000;easing:linear"></a-sphere>
+  <a-sphere position="-30 -5 -60" radius="8" color="#6ee7b7" roughness="0.7" animation="property:rotation;to:0 360 15;loop:true;dur:32000;easing:linear"></a-sphere>
+  <!-- Освітлення -->
+  <a-light type="ambient" color="#e8f0ff" intensity="1.6"></a-light>
+  <a-light type="point" color="#a78bfa" intensity="0.8" position="-20 12 0" animation="property:intensity;from:0.4;to:1.0;loop:true;dur:3000;direction:alternate"></a-light>
+  <a-light type="point" color="#7dd3fc" intensity="0.8" position="20 12 0" animation="property:intensity;from:0.4;to:1.0;loop:true;dur:4000;direction:alternate"></a-light>
+  <a-light type="point" color="#f472b6" intensity="0.6" position="0 12 -20" animation="property:intensity;from:0.2;to:0.8;loop:true;dur:2500;direction:alternate"></a-light>
+  <!-- Disco -->
+  <a-light type="point" color="#ff0080" intensity="0.6" position="-12 12 -12" animation__color="property:light.color;from:#ff0080;to:#0080ff;loop:true;dur:600;direction:alternate" animation__move="property:position;from:-12 12 -12;to:12 12 12;loop:true;dur:1800;direction:alternate;easing:easeInOutSine"></a-light>
+  <a-light type="point" color="#00ff80" intensity="0.6" position="12 12 12" animation__color="property:light.color;from:#00ff80;to:#ff8000;loop:true;dur:800;direction:alternate" animation__move="property:position;from:12 12 12;to:-12 12 -12;loop:true;dur:2200;direction:alternate;easing:easeInOutSine"></a-light>
+  <!-- Сцена -->
+  <a-box width="14" height="0.5" depth="8" position="0 0.25 -22" material="color:#1a2040;opacity:0.9"></a-box>
+  <a-cylinder height="1.5" radius="0.05" position="0 1.25 -22" material="color:#ffffff;opacity:0.7"></a-cylinder>
+  <a-light type="spot" color="#fff8e0" intensity="3.5" position="0 13 -16" angle="28"></a-light>
+  <!-- Екрани StudNFT -->
+  <a-plane width="12" height="7" position="-26 7 -12" rotation="0 60 0" material="color:#0d0020;opacity:0.95"></a-plane>
+  <a-text value="StudNFT" position="-23 10 -8" align="center" color="#a78bfa" width="10" rotation="0 60 0"></a-text>
+  <a-text value="Маркетплейс NFT токенів" position="-23 8.5 -8" align="center" color="#7c3aed" width="8" rotation="0 60 0"></a-text>
+  <a-text value="studnft.vercel.app" position="-23 7.2 -8" align="center" color="#ddd6fe" width="7" rotation="0 60 0"></a-text>
+  <a-light type="point" color="#7c3aed" intensity="0.5" position="-23 9 -8" distance="10"></a-light>
+  <!-- Екрани AgroRWA -->
+  <a-plane width="12" height="7" position="26 7 -12" rotation="0 -60 0" material="color:#001a00;opacity:0.95"></a-plane>
+  <a-text value="AgroRWA" position="23 10 -8" align="center" color="#4ade80" width="10" rotation="0 -60 0"></a-text>
+  <a-text value="Аграрні токени з ораклами" position="23 8.5 -8" align="center" color="#22c55e" width="8" rotation="0 -60 0"></a-text>
+  <a-light type="point" color="#22c55e" intensity="0.5" position="23 9 -8" distance="10"></a-light>
+  <!-- Екрани StudSWAP -->
+  <a-plane width="12" height="7" position="-26 7 14" rotation="0 -60 0" material="color:#001a1a;opacity:0.95"></a-plane>
+  <a-text value="StudSWAP" position="-23 10 12" align="center" color="#22d3ee" width="10" rotation="0 -60 0"></a-text>
+  <a-text value="Біржа студентських токенів" position="-23 8.5 12" align="center" color="#06b6d4" width="8" rotation="0 -60 0"></a-text>
+  <a-light type="point" color="#06b6d4" intensity="0.5" position="-23 9 12" distance="10"></a-light>
+  <!-- Екрани Skillstamp -->
+  <a-plane width="12" height="7" position="26 7 14" rotation="0 60 0" material="color:#1a0a00;opacity:0.95"></a-plane>
+  <a-text value="Skillstamp" position="23 10 12" align="center" color="#fb923c" width="10" rotation="0 60 0"></a-text>
+  <a-text value="Університет на основі SBT" position="23 8.5 12" align="center" color="#f97316" width="8" rotation="0 60 0"></a-text>
+  <a-light type="point" color="#f97316" intensity="0.5" position="23 9 12" distance="10"></a-light>
+  <!-- Дивани -->
+  <a-box width="5" height="0.7" depth="1.8" position="-18 0.35 -6" material="color:#f8f5f0;roughness:0.95"></a-box>
+  <a-box width="1.8" height="1.5" depth="1.8" position="-20.8 0.75 -6" material="color:#f0ede8;roughness:0.95"></a-box>
+  <a-box width="5" height="0.7" depth="1.8" position="18 0.35 -6" material="color:#f8f5f0;roughness:0.95"></a-box>
+  <a-box width="1.8" height="1.5" depth="1.8" position="20.8 0.75 -6" material="color:#f0ede8;roughness:0.95"></a-box>
+  <!-- Рослини -->
+  <a-cylinder height="1.0" radius="0.3" position="-25 0.5 -22" material="color:#f5f5f0;roughness:0.95"></a-cylinder>
+  <a-cylinder height="1.8" radius="0.25" position="-25 1.4 -22" material="color:#4ade80;roughness:0.75"></a-cylinder>
+  <a-cylinder height="1.0" radius="0.3" position="25 0.5 -22" material="color:#f5f5f0;roughness:0.95"></a-cylinder>
+  <a-cylinder height="1.8" radius="0.25" position="25 1.4 -22" material="color:#22c55e;roughness:0.75"></a-cylinder>
+  <a-cylinder height="0.9" radius="0.25" position="-25 0.45 10" material="color:#f5f5f0;roughness:0.95"></a-cylinder>
+  <a-cylinder height="1.4" radius="0.2" position="-25 1.1 10" material="color:#86efac;roughness:0.8"></a-cylinder>
+  <a-cylinder height="0.9" radius="0.25" position="25 0.45 10" material="color:#f5f5f0;roughness:0.95"></a-cylinder>
+  <a-cylinder height="1.4" radius="0.2" position="25 1.1 10" material="color:#4ade80;roughness:0.8"></a-cylinder>
+  <!-- Портал → Хол -->
+  <a-plane width="7" height="10" position="0 5 26" material="color:#f59e0b;opacity:0.65;transparent:true"></a-plane>
+  <a-text value="Хол" position="0 10.5 25.9" align="center" color="#fcd34d" width="6" rotation="0 180 0"></a-text>
+  <a-plane width="7" height="10" position="0 5 26" class="gaze-portal" material="opacity:0;transparent:true" data-dest-x="0" data-dest-y="1.6" data-dest-z="0" data-rot="0" data-room="Головний хол"></a-plane>
+</a-entity>
 
-    <!-- Освітлення -->
-    <a-light type="ambient" color="#e8f0ff" intensity="1.6"></a-light>
-    <a-light type="point" color="#a78bfa" intensity="0.8" position="-18 10 0"
-      animation="property:intensity;from:0.4;to:1.0;loop:true;dur:3000;direction:alternate"></a-light>
-    <a-light type="point" color="#7dd3fc" intensity="0.8" position="18 10 0"
-      animation="property:intensity;from:0.4;to:1.0;loop:true;dur:4000;direction:alternate"></a-light>
-    <a-light type="point" color="#f472b6" intensity="0.6" position="0 10 -18"
-      animation="property:intensity;from:0.2;to:0.8;loop:true;dur:2500;direction:alternate"></a-light>
-
-    <!-- Disco lights -->
-    <a-light type="point" color="#ff0080" intensity="0.5" position="-10 10 -10" id="dl1"
-      animation__color="property:light.color;from:#ff0080;to:#0080ff;loop:true;dur:600;direction:alternate"
-      animation__move="property:position;from:-10 10 -10;to:10 10 10;loop:true;dur:1800;direction:alternate;easing:easeInOutSine"></a-light>
-    <a-light type="point" color="#00ff80" intensity="0.5" position="10 10 10" id="dl2"
-      animation__color="property:light.color;from:#00ff80;to:#ff8000;loop:true;dur:800;direction:alternate"
-      animation__move="property:position;from:10 10 10;to:-10 10 -10;loop:true;dur:2200;direction:alternate;easing:easeInOutSine"></a-light>
-
-    <!-- Сцена -->
-    <a-box width="12" height="0.5" depth="7" position="0 0.25 -18"
-      material="color:#1a2040;opacity:0.9"></a-box>
-    <a-cylinder height="1.5" radius="0.05" position="0 1.25 -18"
-      material="color:#ffffff;opacity:0.7"></a-cylinder>
-    <a-light type="spot" color="#fff8e0" intensity="3.0" position="0 11 -14" angle="30"></a-light>
-
-    <!-- Великі рекламні екрани -->
-    <!-- StudNFT -->
-    <a-plane width="10" height="6" position="-22 6 -10" rotation="0 60 0"
-      material="color:#0d0020;opacity:0.95"></a-plane>
-    <a-text value="StudNFT" position="-22 8.5 -9" align="center" color="#a78bfa" width="8" rotation="0 60 0"></a-text>
-    <a-text value="Маркетплейс NFT" position="-22 7.2 -9" align="center" color="#7c3aed" width="6" rotation="0 60 0"></a-text>
-    <a-text value="студентських токенів" position="-22 6.2 -9" align="center" color="#ddd6fe" width="6" rotation="0 60 0"></a-text>
-    <a-text value="studnft.vercel.app" position="-22 5.2 -9" align="center" color="#6d28d9" width="5" rotation="0 60 0"></a-text>
-    <a-light type="point" color="#7c3aed" intensity="0.4" position="-22 8 -9" distance="8"></a-light>
-
-    <!-- AgroRWA -->
-    <a-plane width="10" height="6" position="22 6 -10" rotation="0 -60 0"
-      material="color:#001a00;opacity:0.95"></a-plane>
-    <a-text value="AgroRWA" position="22 8.5 -9" align="center" color="#4ade80" width="8" rotation="0 -60 0"></a-text>
-    <a-text value="Аграрні токени" position="22 7.2 -9" align="center" color="#22c55e" width="6" rotation="0 -60 0"></a-text>
-    <a-text value="з ораклами та страхуванням" position="22 6.2 -9" align="center" color="#bbf7d0" width="6" rotation="0 -60 0"></a-text>
-    <a-light type="point" color="#22c55e" intensity="0.4" position="22 8 -9" distance="8"></a-light>
-
-    <!-- StudSWAP -->
-    <a-plane width="10" height="6" position="-22 6 10" rotation="0 -60 0"
-      material="color:#001a1a;opacity:0.95"></a-plane>
-    <a-text value="StudSWAP" position="-22 8.5 11" align="center" color="#22d3ee" width="8" rotation="0 -60 0"></a-text>
-    <a-text value="Біржа студентських" position="-22 7.2 11" align="center" color="#06b6d4" width="6" rotation="0 -60 0"></a-text>
-    <a-text value="токенів" position="-22 6.2 11" align="center" color="#cffafe" width="6" rotation="0 -60 0"></a-text>
-    <a-light type="point" color="#06b6d4" intensity="0.4" position="-22 8 11" distance="8"></a-light>
-
-    <!-- Skillstamp -->
-    <a-plane width="10" height="6" position="22 6 10" rotation="0 60 0"
-      material="color:#1a0a00;opacity:0.95"></a-plane>
-    <a-text value="Skillstamp" position="22 8.5 11" align="center" color="#fb923c" width="8" rotation="0 60 0"></a-text>
-    <a-text value="Університет на основі" position="22 7.2 11" align="center" color="#f97316" width="6" rotation="0 60 0"></a-text>
-    <a-text value="SBT токенів" position="22 6.2 11" align="center" color="#fed7aa" width="6" rotation="0 60 0"></a-text>
-    <a-light type="point" color="#f97316" intensity="0.4" position="22 8 11" distance="8"></a-light>
-
-    <!-- Lounge дивани -->
-    <a-box width="4" height="0.7" depth="1.5" position="-16 0.35 -6"
-      material="color:#f8f5f0;roughness:0.95"></a-box>
-    <a-box width="1.5" height="1.4" depth="1.5" position="-17.8 0.7 -6"
-      material="color:#f0ede8;roughness:0.95"></a-box>
-    <a-box width="4" height="0.7" depth="1.5" position="16 0.35 -6"
-      material="color:#f8f5f0;roughness:0.95"></a-box>
-    <a-box width="1.5" height="1.4" depth="1.5" position="17.8 0.7 -6"
-      material="color:#f0ede8;roughness:0.95"></a-box>
-    <a-cylinder height="0.07" radius="0.8" position="-13.5 0.5 -6"
-      material="color:#dde8ff;opacity:0.6;transparent:true;metalness:0.9"></a-cylinder>
-    <a-cylinder height="0.07" radius="0.8" position="13.5 0.5 -6"
-      material="color:#dde8ff;opacity:0.6;transparent:true;metalness:0.9"></a-cylinder>
-
-    <!-- Рослини -->
-    <a-cylinder height="1.0" radius="0.3" position="-22 0.5 -20"
-      material="color:#f5f5f0;roughness:0.95"></a-cylinder>
-    <a-cylinder height="1.6" radius="0.25" position="-22 1.3 -20"
-      material="color:#4ade80;roughness:0.75"></a-cylinder>
-    <a-cylinder height="1.0" radius="0.3" position="22 0.5 -20"
-      material="color:#f5f5f0;roughness:0.95"></a-cylinder>
-    <a-cylinder height="1.8" radius="0.25" position="22 1.4 -20"
-      material="color:#22c55e;roughness:0.75"></a-cylinder>
-    <a-cylinder height="0.9" radius="0.25" position="-22 0.45 8"
-      material="color:#f5f5f0;roughness:0.95"></a-cylinder>
-    <a-cylinder height="1.3" radius="0.2" position="-22 1.1 8"
-      material="color:#86efac;roughness:0.8"></a-cylinder>
-    <a-cylinder height="0.9" radius="0.25" position="22 0.45 8"
-      material="color:#f5f5f0;roughness:0.95"></a-cylinder>
-    <a-cylinder height="1.4" radius="0.2" position="22 1.15 8"
-      material="color:#4ade80;roughness:0.8"></a-cylinder>
-
-    <!-- Портал → Хол -->
-    <a-plane width="6" height="8" position="0 4 22"
-      material="color:#f59e0b;opacity:0.65;transparent:true"></a-plane>
-    <a-text value="Хол" position="0 8.5 21.9" align="center" color="#fcd34d" width="5" rotation="0 180 0"></a-text>
-    <a-plane width="6" height="8" position="0 4 22"
-      class="gaze-portal" material="opacity:0;transparent:true"
-      data-dest-x="0" data-dest-y="1.6" data-dest-z="0" data-rot="0"
-      data-room="Головний хол"></a-plane>
-
-  </a-entity>
-
-  <!-- ══════════════════════════════════════════
-       КАМЕРА
-  ══════════════════════════════════════════ -->
-  <a-entity id="player" position="0 1.6 20">
-    <a-camera id="cam" wasd-controls look-controls>
-      <a-cursor
-        color="#ffffff"
-        fuse="true"
-        fuse-timeout="2000"
-        raycaster="objects: .gaze-portal"
-        geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
-        material="color: white; shader: flat">
-      </a-cursor>
-    </a-camera>
-  </a-entity>
+<!-- КАМЕРА -->
+<a-entity id="player" position="0 1.6 20">
+  <a-camera id="cam" wasd-controls look-controls>
+    <a-cursor color="#ffffff" fuse="true" fuse-timeout="2000" raycaster="objects: .gaze-portal" geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03" material="color: white; shader: flat"></a-cursor>
+  </a-camera>
+</a-entity>
 
 </a-scene>
 
 <script>
 const label = document.getElementById('room-label');
-
-document.querySelectorAll('.gaze-portal').forEach(portal => {
-  portal.addEventListener('click', () => {
-    const x = parseFloat(portal.dataset.destX);
-    const y = parseFloat(portal.dataset.destY);
-    const z = parseFloat(portal.dataset.destZ);
-    const rot = parseFloat(portal.dataset.rot) || 0;
-    const room = portal.dataset.room || '';
-    document.getElementById('player').setAttribute('position', {x, y, z});
-    document.getElementById('cam').setAttribute('rotation', {x:0, y:rot, z:0});
-    if (room) label.textContent = room;
+document.querySelectorAll('.gaze-portal').forEach(p => {
+  p.addEventListener('click', () => {
+    const x=parseFloat(p.dataset.destX), y=parseFloat(p.dataset.destY), z=parseFloat(p.dataset.destZ), rot=parseFloat(p.dataset.rot)||0;
+    document.getElementById('player').setAttribute('position',{x,y,z});
+    document.getElementById('cam').setAttribute('rotation',{x:0,y:rot,z:0});
+    if(p.dataset.room) label.textContent=p.dataset.room;
   });
 });
 
-// NFT Галерея — розміщення по колу
-const CONTRACT = "0x19a9D64Fe37e02f7a07f3749fC1c58a6bcEa5E77";
-const RPC = "https://ethereum-sepolia-rpc.publicnode.com";
-const PINATA = "https://jade-improved-centipede-840.mypinata.cloud/ipfs/";
-const PKEY = "9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU";
+const CONTRACT="0x19a9D64Fe37e02f7a07f3749fC1c58a6bcEa5E77";
+const RPC="https://ethereum-sepolia-rpc.publicnode.com";
+const PINATA="https://jade-improved-centipede-840.mypinata.cloud/ipfs/";
+const PKEY="9kVM15wkjhfYTkx56h3XsRr2lobCVNrcTr9W_J_k5ufe-LTNGW_Ao6_85UNuY9EU";
 
-function iUrl(u){
-  if(!u)return null;
-  if(u.startsWith("ipfs://"))return PINATA+u.slice(7)+"?pinataGatewayToken="+PKEY;
-  if(u.includes("mypinata.cloud"))return u.includes("?")?u:u+"?pinataGatewayToken="+PKEY;
-  if(u.startsWith("http"))return u;
-  return PINATA+u+"?pinataGatewayToken="+PKEY;
-}
-
-async function rpc(m,p){
-  const r=await fetch(RPC,{method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({jsonrpc:"2.0",id:1,method:m,params:p})});
-  return (await r.json()).result;
-}
-
+function iUrl(u){if(!u)return null;if(u.startsWith("ipfs://"))return PINATA+u.slice(7)+"?pinataGatewayToken="+PKEY;if(u.includes("mypinata.cloud"))return u.includes("?")?u:u+"?pinataGatewayToken="+PKEY;if(u.startsWith("http"))return u;return PINATA+u+"?pinataGatewayToken="+PKEY;}
+async function rpc(m,p){const r=await fetch(RPC,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({jsonrpc:"2.0",id:1,method:m,params:p})});return(await r.json()).result;}
 function enc(s,id){return s+id.toString(16).padStart(64,"0");}
-
-function decStr(h){
-  if(!h||h==="0x")return "";
-  try{
-    const c=h.slice(2);
-    const l=parseInt(c.slice(64,128),16)*2;
-    return decodeURIComponent(c.slice(128,128+l).replace(/../g,"%$&"));
-  }catch{return "";}
-}
-
+function decStr(h){if(!h||h==="0x")return "";try{const c=h.slice(2);const l=parseInt(c.slice(64,128),16)*2;return decodeURIComponent(c.slice(128,128+l).replace(/../g,"%$&"));}catch{return "";}}
 function decAddr(h){return h&&h.length>=40?"0x"+h.slice(-40):"";}
-function short(a){return a?a.slice(0,6)+"..."+a.slice(-4):"";}
 
-function placeNFT(scene, pos, rot, meta, id, own){
-  const g = document.createElement("a-entity");
-  g.setAttribute("position", `${pos.x} ${pos.y} ${pos.z}`);
-  g.setAttribute("rotation", `0 ${rot} 0`);
-
-  // Рамка в стилі галереї
-  const frame = document.createElement("a-plane");
-  frame.setAttribute("width","8");
-  frame.setAttribute("height","9");
-  frame.setAttribute("material","color:#f8f5f0;roughness:0.9");
-  frame.setAttribute("position","0 0 -0.04");
-  g.appendChild(frame);
-
-  // Зображення
-  const img = document.createElement("a-plane");
-  img.setAttribute("width","7.4");
-  img.setAttribute("height","7.4");
-  const url = iUrl(meta.image);
-  if(id === 15){
-      img.setAttribute("material","src:#nft-video-15;shader:flat");
-    } else if(url){
-      const imgEl = document.createElement("img");
-      imgEl.setAttribute("src", url);
-      imgEl.setAttribute("crossorigin", "anonymous");
-      imgEl.id = "nft-img-"+id;
-      document.querySelector("a-assets").appendChild(imgEl);
-      imgEl.onload = () => img.setAttribute("material", "src:#nft-img-"+id+";shader:flat");
-      imgEl.onerror = () => img.setAttribute("material", "color:#2a1a4a");
-    } }
-  else img.setAttribute("material","color:#2a1a4a");
-  img.setAttribute("position","0 0.8 0");
-  g.appendChild(img);
-
-  // Табличка під зображенням
-  const plate = document.createElement("a-plane");
-  plate.setAttribute("width","8");
-  plate.setAttribute("height","2.2");
-  plate.setAttribute("position","0 -4.5 -0.02");
-  plate.setAttribute("material","color:#1a1a1a");
-  g.appendChild(plate);
-
-  // Назва
-  const title = document.createElement("a-entity");
-  title.setAttribute("position","0 -4.0 0.02");
-  title.setAttribute("text",`value:${meta.name||"NFT #"+id};align:center;color:#ffffff;width:6.0;wrapCount:24`);
-  g.appendChild(title);
-
-  // Власник
-  const owner = document.createElement("a-entity");
-  owner.setAttribute("position","0 -4.6 0.02");
-  owner.setAttribute("text",`value:${own};align:center;color:#888888;width:7.0;wrapCount:30`);
-  g.appendChild(owner);
-
-  // Номер токену
-  const num = document.createElement("a-entity");
-  num.setAttribute("position","-3.5 4.2 0.02");
-  num.setAttribute("text",`value:#${id};align:left;color:#ffd700;width:2.5;wrapCount:10`);
-  g.appendChild(num);
-
+function placeNFT(scene,pos,rot,meta,id,own){
+  const g=document.createElement("a-entity");
+  g.setAttribute("position",`${pos.x} ${pos.y} ${pos.z}`);
+  g.setAttribute("rotation",`0 ${rot} 0`);
+  const fr=document.createElement("a-plane");
+  fr.setAttribute("width","9");fr.setAttribute("height","10");
+  fr.setAttribute("material","color:#f8f5f0;roughness:0.9");
+  fr.setAttribute("position","0 0 -0.05");
+  g.appendChild(fr);
+  const im=document.createElement("a-plane");
+  im.setAttribute("width","8.4");im.setAttribute("height","8.4");
+  im.setAttribute("position","0 0.5 0");
+  if(id===15){
+    im.setAttribute("material","src:#nft-video-15;shader:flat");
+  } else {
+    const imgEl=document.createElement("img");
+    imgEl.setAttribute("src",iUrl(meta.image));
+    imgEl.setAttribute("crossorigin","anonymous");
+    imgEl.id="nft-img-"+id;
+    document.querySelector("a-assets").appendChild(imgEl);
+    imgEl.onload=()=>im.setAttribute("material","src:#nft-img-"+id+";shader:flat");
+    imgEl.onerror=()=>im.setAttribute("material","color:#2a1a4a");
+  }
+  g.appendChild(im);
+  const bg=document.createElement("a-plane");
+  bg.setAttribute("width","9");bg.setAttribute("height","2.5");
+  bg.setAttribute("position","0 -4.5 -0.02");
+  bg.setAttribute("material","color:#1a1a1a");
+  g.appendChild(bg);
+  const mk=(v,p,c,w)=>{const e=document.createElement("a-entity");e.setAttribute("position",p);e.setAttribute("text",`value:${v};align:center;color:${c};width:${w};wrapCount:28`);return e;};
+  g.appendChild(mk(meta.name||"NFT #"+id,"0 -3.8 0.02","#ffffff",7.5));
+  g.appendChild(mk(own,"0 -4.6 0.02","#888888",7.0));
+  g.appendChild(mk("#"+id,"-4.0 4.6 0.02","#ffd700",2.5));
   scene.appendChild(g);
 }
 
-async function loadGalleryNFT(scene, id, pos, rot){
+async function loadGalleryNFT(scene,id,pos,rot){
   try{
-    const uh = await rpc("eth_call",[{to:CONTRACT,data:enc("0xc87b56dd",id)},"latest"]);
-    const uri = decStr(uh);
-    if(!uri)return;
+    const uh=await rpc("eth_call",[{to:CONTRACT,data:enc("0xc87b56dd",id)},"latest"]);
+    const uri=decStr(uh);if(!uri)return;
     let meta;
-    if(uri.startsWith("data:application/json;base64,")) meta=JSON.parse(atob(uri.slice(29)));
-    else if(uri.startsWith("data:application/json,")) meta=JSON.parse(decodeURIComponent(uri.slice(22)));
+    if(uri.startsWith("data:application/json;base64,"))meta=JSON.parse(atob(uri.slice(29)));
+    else if(uri.startsWith("data:application/json,"))meta=JSON.parse(decodeURIComponent(uri.slice(22)));
     else{const r=await fetch(iUrl(uri));meta=await r.json();}
-    const oh = await rpc("eth_call",[{to:CONTRACT,data:enc("0x6352211e",id)},"latest"]);
-    placeNFT(scene, pos, rot, meta, id, decAddr(oh));
-  }catch(e){
-    console.warn("Gallery NFT #"+id,e);
-    placeNFT(scene, {x:pos.x,y:pos.y,z:pos.z}, rot, {name:"NFT #"+id,image:null}, id, "");
-  }
+    const oh=await rpc("eth_call",[{to:CONTRACT,data:enc("0x6352211e",id)},"latest"]);
+    placeNFT(scene,pos,rot,meta,id,decAddr(oh));
+  }catch(e){console.warn("NFT #"+id,e);placeNFT(scene,{x:pos.x,y:pos.y,z:pos.z},rot,{name:"NFT #"+id,image:null},id,"");}
 }
 
 async function buildGallery(){
-  const scene = document.querySelector("a-scene");
-  const GALLERY_X = -120;
-  const RADIUS = 45;
-  const TOTAL = 30;
-
+  const scene=document.querySelector("a-scene");
+  const GALLERY_X=-120, RADIUS=42, TOTAL=30;
   for(let i=0;i<TOTAL;i++){
-    const angle = (i/TOTAL)*Math.PI*2 - Math.PI/2;
-    const x = GALLERY_X + Math.sin(angle)*RADIUS;
-    const z = Math.cos(angle)*RADIUS;
-    const rot = -(angle*180/Math.PI);
-    const pos = {x, y:6, z};
-    loadGalleryNFT(scene, i, pos, rot);
+    const angle=(i/TOTAL)*Math.PI*2-Math.PI/2;
+    const x=GALLERY_X+Math.sin(angle)*RADIUS;
+    const z=Math.cos(angle)*RADIUS;
+    const rot=-(angle*180/Math.PI);
+    loadGalleryNFT(scene,i,{x,y:6,z},rot);
     await new Promise(r=>setTimeout(r,200));
   }
 }
@@ -625,6 +325,5 @@ document.addEventListener("DOMContentLoaded",()=>{
   s.hasLoaded?buildGallery():s.addEventListener("loaded",buildGallery);
 });
 </script>
-
 </body>
 </html>
