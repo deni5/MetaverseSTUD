@@ -213,15 +213,15 @@
   <a-entity id="nft-gallery" position="-60 0 0">
 
     <!-- Кругла підлога -->
-    <a-cylinder height="0.1" radius="35" position="0 0 0"
+    <a-cylinder height="0.1" radius="50" position="0 0 0"
       material="color:#0d0d1a;roughness:0.8;metalness:0.3"></a-cylinder>
 
     <!-- Стеля -->
-    <a-cylinder height="0.3" radius="35" position="0 20 0"
+    <a-cylinder height="0.3" radius="50" position="0 20 0"
       material="color:#080810;roughness:0.9"></a-cylinder>
 
     <!-- Кругла стіна -->
-    <a-cylinder height="20" radius="35" position="0 10 0"
+    <a-cylinder height="20" radius="50" position="0 10 0"
       material="color:#0a0a18;roughness:0.85;side:back"></a-cylinder>
 
     <!-- Центральний світильник -->
@@ -231,15 +231,15 @@
     <a-light type="ambient" color="#1a1a2e" intensity="0.8"></a-light>
 
     <!-- Паркетна підлога з відбиттям -->
-    <a-plane width="70" height="70" rotation="-90 0 0" position="0 0.05 0"
+    <a-plane width="100" height="100" rotation="-90 0 0" position="0 0.05 0"
       material="color:#1a1a2e;roughness:0.1;metalness:0.5"></a-plane>
 
     <!-- Портал назад до холу -->
-    <a-plane width="5" height="9" position="33 4.5 0" rotation="0 -90 0"
+    <a-plane width="5" height="9" position="48 4.5 0" rotation="0 -90 0"
       material="color:#f59e0b;opacity:0.65;transparent:true"></a-plane>
     <a-text value="Хол" position="21 7.2 0" align="center"
       color="#fcd34d" width="4" rotation="0 -90 0"></a-text>
-    <a-plane width="5" height="9" position="33 4.5 0" rotation="0 -90 0"
+    <a-plane width="5" height="9" position="48 4.5 0" rotation="0 -90 0"
       class="gaze-portal" material="opacity:0;transparent:true"
       data-dest-x="0" data-dest-y="1.6" data-dest-z="0" data-rot="0"
       data-room="Головний хол"></a-plane>
@@ -541,16 +541,16 @@ function placeNFT(scene, pos, rot, meta, id, own){
 
   // Рамка в стилі галереї
   const frame = document.createElement("a-plane");
-  frame.setAttribute("width","12");
-  frame.setAttribute("height","13");
+  frame.setAttribute("width","8");
+  frame.setAttribute("height","9");
   frame.setAttribute("material","color:#f8f5f0;roughness:0.9");
   frame.setAttribute("position","0 0 -0.04");
   g.appendChild(frame);
 
   // Зображення
   const img = document.createElement("a-plane");
-  img.setAttribute("width","11");
-  img.setAttribute("height","11");
+  img.setAttribute("width","7.4");
+  img.setAttribute("height","7.4");
   const url = iUrl(meta.image);
   if(url){
       const imgEl = document.createElement("img");
@@ -562,33 +562,33 @@ function placeNFT(scene, pos, rot, meta, id, own){
       imgEl.onerror = () => img.setAttribute("material", "color:#2a1a4a");
     }
   else img.setAttribute("material","color:#2a1a4a");
-  img.setAttribute("position","0 0.5 0");
+  img.setAttribute("position","0 0.8 0");
   g.appendChild(img);
 
   // Табличка під зображенням
   const plate = document.createElement("a-plane");
-  plate.setAttribute("width","12");
-  plate.setAttribute("height","3.0");
-  plate.setAttribute("position","0 -5.5 -0.02");
+  plate.setAttribute("width","8");
+  plate.setAttribute("height","2.2");
+  plate.setAttribute("position","0 -4.5 -0.02");
   plate.setAttribute("material","color:#1a1a1a");
   g.appendChild(plate);
 
   // Назва
   const title = document.createElement("a-entity");
-  title.setAttribute("position","0 -4.8 0.02");
-  title.setAttribute("text",`value:${meta.name||"NFT #"+id};align:center;color:#ffffff;width:10.0;wrapCount:20`);
+  title.setAttribute("position","0 -4.0 0.02");
+  title.setAttribute("text",`value:${meta.name||"NFT #"+id};align:center;color:#ffffff;width:6.0;wrapCount:24`);
   g.appendChild(title);
 
   // Власник
   const owner = document.createElement("a-entity");
-  owner.setAttribute("position","0 -5.8 0.02");
-  owner.setAttribute("text",`value:${short(own)};align:center;color:#aaaaaa;width:8.0;wrapCount:20`);
+  owner.setAttribute("position","0 -4.6 0.02");
+  owner.setAttribute("text",`value:${short(own)};align:center;color:#888888;width:5.0;wrapCount:24`);
   g.appendChild(owner);
 
   // Номер токену
   const num = document.createElement("a-entity");
-  num.setAttribute("position","-5.2 5.8 0.02");
-  num.setAttribute("text",`value:#${id};align:left;color:#888888;width:4.0;wrapCount:10`);
+  num.setAttribute("position","-3.5 4.2 0.02");
+  num.setAttribute("text",`value:#${id};align:left;color:#ffd700;width:2.5;wrapCount:10`);
   g.appendChild(num);
 
   scene.appendChild(g);
@@ -614,15 +614,15 @@ async function loadGalleryNFT(scene, id, pos, rot){
 async function buildGallery(){
   const scene = document.querySelector("a-scene");
   const GALLERY_X = -60;
-  const RADIUS = 28;
-  const TOTAL = 12;
+  const RADIUS = 45;
+  const TOTAL = 30;
 
   for(let i=0;i<TOTAL;i++){
     const angle = (i/TOTAL)*Math.PI*2 - Math.PI/2;
     const x = GALLERY_X + Math.sin(angle)*RADIUS;
     const z = Math.cos(angle)*RADIUS;
     const rot = -(angle*180/Math.PI);
-    const pos = {x, y:7, z};
+    const pos = {x, y:6, z};
     loadGalleryNFT(scene, i, pos, rot);
     await new Promise(r=>setTimeout(r,200));
   }
