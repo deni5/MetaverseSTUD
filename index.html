@@ -24,6 +24,7 @@
   <a-assets>
     <img id="cuneiform" src="./assets/cuneiform.jpg" crossorigin="anonymous">
     <img id="dean" src="./assets/dean.jpg" crossorigin="anonymous">
+    <video id="nft-video-15" src="./assets/nft15.mp4" autoplay loop muted playsinline crossorigin="anonymous"></video>
   </a-assets>
 
   <a-sky color="#0d0500"></a-sky>
@@ -116,45 +117,45 @@
       material="color:#b8953a;roughness:0.8"></a-plane>
 
     <!-- АЛТАР з портретом завідуючого — величний до стелі -->
-    <a-box width="10" height="0.6" depth="3" position="0 0.3 -28"
+    <a-box width="10" height="0.6" depth="3" position="0 0.3 -25"
       material="color:#2a1a00;roughness:0.85;metalness:0.2"></a-box>
-    <a-box width="8" height="0.4" depth="2.5" position="0 0.8 -28"
+    <a-box width="8" height="0.4" depth="2.5" position="0 0.8 -25"
       material="color:#3a2800;roughness:0.8;metalness:0.3"></a-box>
-    <a-box width="7" height="19" depth="0.4" position="0 15 -29"
+    <a-box width="7" height="19" depth="0.4" position="0 10 -26"
       material="color:#1a0e00;roughness:0.95"></a-box>
     <!-- Золота рамка -->
     <a-plane width="7.4" height="9.4" position="0 9 -14.1"
       material="color:#c8a54a;roughness:0.6;metalness:0.5"></a-plane>
     <!-- Портрет -->
-    <a-plane width="6.8" height="8.8" position="0 16 -28.7"
+    <a-plane width="6.8" height="8.8" position="0 10 -25.8"
       material="src:#dean;roughness:0.5"></a-plane>
     <!-- Верхній орнамент -->
-    <a-box width="7.6" height="0.4" depth="0.3" position="0 26 -29"
+    <a-box width="7.6" height="0.4" depth="0.3" position="0 19 -26"
       material="color:#c8a54a;roughness:0.6;metalness:0.5"></a-box>
     <!-- Нижній орнамент -->
-    <a-box width="7.6" height="0.4" depth="0.3" position="0 6 -29"
+    <a-box width="7.6" height="0.4" depth="0.3" position="0 4 -26"
       material="color:#c8a54a;roughness:0.6;metalness:0.5"></a-box>
-    <a-text value="Завідуючий кафедрою" position="0 2 -27.5"
+    <a-text value="Завідуючий кафедрою" position="0 1.5 -24.5"
       align="center" color="#ffd700" width="7"></a-text>
-    <a-light type="spot" color="#ffeeaa" intensity="3.0" position="0 22 -8"
+    <a-light type="spot" color="#ffeeaa" intensity="3.0" position="0 28 -18"
       target="#altar" angle="20"></a-light>
-    <a-light type="spot" color="#ffdd88" intensity="2.0" position="-5 22 -8"
+    <a-light type="spot" color="#ffdd88" intensity="2.0" position="-5 28 -18"
       target="#altar" angle="15"></a-light>
-    <a-light type="spot" color="#ffdd88" intensity="2.0" position="5 22 -8"
+    <a-light type="spot" color="#ffdd88" intensity="2.0" position="5 28 -18"
       target="#altar" angle="15"></a-light>
-    <a-entity id="altar" position="0 16 -28.8"></a-entity>
+    <a-entity id="altar" position="0 10 -25.8"></a-entity>
 
     <!-- Свічки біля алтаря -->
-    <a-cylinder height="0.4" radius="0.05" position="-1.5 0.7 -27"
+    <a-cylinder height="0.4" radius="0.05" position="-1.5 0.7 -24.5"
       material="color:#f5f0e0"></a-cylinder>
-    <a-cylinder height="0.4" radius="0.05" position="1.5 0.7 -27"
+    <a-cylinder height="0.4" radius="0.05" position="1.5 0.7 -24.5"
       material="color:#f5f0e0"></a-cylinder>
-    <a-sphere radius="0.06" position="-1.5 0.92 -27"
+    <a-sphere radius="0.06" position="-1.5 0.92 -24.5"
       material="color:#ffcc00;emissive:#ffaa00;emissiveIntensity:0.8"></a-sphere>
-    <a-sphere radius="0.06" position="1.5 0.92 -27"
+    <a-sphere radius="0.06" position="1.5 0.92 -24.5"
       material="color:#ffcc00;emissive:#ffaa00;emissiveIntensity:0.8"></a-sphere>
-    <a-light type="point" color="#ff8800" intensity="0.4" position="-1.5 1.2 -27" distance="3"></a-light>
-    <a-light type="point" color="#ff8800" intensity="0.4" position="1.5 1.2 -27" distance="3"></a-light>
+    <a-light type="point" color="#ff8800" intensity="0.4" position="-1.5 1.2 -24.5" distance="3"></a-light>
+    <a-light type="point" color="#ff8800" intensity="0.4" position="1.5 1.2 -24.5" distance="3"></a-light>
 
     <!-- Портал → NFT Галерея (замість старого коридору) -->
     <a-entity position="-38 0 0">
@@ -552,7 +553,9 @@ function placeNFT(scene, pos, rot, meta, id, own){
   img.setAttribute("width","7.4");
   img.setAttribute("height","7.4");
   const url = iUrl(meta.image);
-  if(url){
+  if(id === 15){
+      img.setAttribute("material","src:#nft-video-15;shader:flat");
+    } else if(url){
       const imgEl = document.createElement("img");
       imgEl.setAttribute("src", url);
       imgEl.setAttribute("crossorigin", "anonymous");
@@ -560,7 +563,7 @@ function placeNFT(scene, pos, rot, meta, id, own){
       document.querySelector("a-assets").appendChild(imgEl);
       imgEl.onload = () => img.setAttribute("material", "src:#nft-img-"+id+";shader:flat");
       imgEl.onerror = () => img.setAttribute("material", "color:#2a1a4a");
-    }
+    } }
   else img.setAttribute("material","color:#2a1a4a");
   img.setAttribute("position","0 0.8 0");
   g.appendChild(img);
@@ -582,7 +585,7 @@ function placeNFT(scene, pos, rot, meta, id, own){
   // Власник
   const owner = document.createElement("a-entity");
   owner.setAttribute("position","0 -4.6 0.02");
-  owner.setAttribute("text",`value:${short(own)};align:center;color:#888888;width:5.0;wrapCount:24`);
+  owner.setAttribute("text",`value:${own};align:center;color:#888888;width:7.0;wrapCount:30`);
   g.appendChild(owner);
 
   // Номер токену
