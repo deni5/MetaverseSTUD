@@ -49,6 +49,7 @@
   <a-light type="point" color="#ffaa22" intensity="1.2" position="12 26 -10"></a-light>
 
   <!-- АЛТАР -->
+  <a-box width="14" height="2.0" depth="4" position="0 1.0 -27" material="color:#1a0e00;roughness:0.9"></a-box>
   <a-box width="12" height="0.6" depth="3" position="0 0.3 -27" material="color:#2a1a00;roughness:0.85;metalness:0.2"></a-box>
   <a-box width="10" height="0.4" depth="2.5" position="0 0.8 -27" material="color:#3a2800;roughness:0.8;metalness:0.3"></a-box>
   <!-- Рамка портрету -->
@@ -289,8 +290,7 @@ function placeNFT(scene,pos,rot,meta,id,own){
   g.appendChild(bg);
   const mk=(v,p,c,w)=>{const e=document.createElement("a-entity");e.setAttribute("position",p);e.setAttribute("text",`value:${v};align:center;color:${c};width:${w};wrapCount:28`);return e;};
   g.appendChild(mk(meta.name||"NFT #"+id,"0 -4.0 0.02","#ffffff",7.0));
-  const shortOwn = own.slice(0,10)+'...'+own.slice(-8);
-  g.appendChild(mk(shortOwn,"0 -4.8 0.02","#aaaaaa",6.5));
+  g.appendChild(mk(own,"0 -4.8 0.02","#999999",4.5));
   g.appendChild(mk("#"+id,"-4.0 4.6 0.02","#ffd700",2.5));
   scene.appendChild(g);
 }
